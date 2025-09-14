@@ -1,80 +1,111 @@
 {% extends 'base.html' %} {% block content %}
 <div class="min-h-screen">
-  <header class="bg-white/90 backdrop-blur-sm shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+  <header class="bg-white/90 backdrop-blur-sm shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-2 sm:py-3 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-          <i data-lucide="heart" class="h-8 w-8 text-pink-500"></i>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <i
+            data-lucide="heart"
+            class="h-5 w-5 sm:h-6 sm:w-8 text-yellow-500"
+          ></i>
           <span
-            class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
+            class="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-yellow-500 to-orange-600 bg-clip-text text-transparent"
           >
-            LoveConnect
+            Sharodiya-Swipe
           </span>
         </div>
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
           <a
             href="{{ url_for('dashboard') }}"
-            class="p-2 text-gray-600 hover:text-pink-600 transition-colors"
+            class="p-1.5 sm:p-2 text-gray-600 hover:text-yellow-600 transition-colors"
           >
-            <i data-lucide="arrow-left" class="h-6 w-6"></i>
+            <i
+              data-lucide="arrow-left"
+              class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+            ></i>
           </a>
         </div>
       </div>
     </div>
   </header>
 
-  <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-    <div class="grid lg:grid-cols-3 gap-8">
+  <div
+    class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 sm:px-6 lg:px-8"
+  >
+    <div class="grid lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+      <!-- Left Column - Profile Info -->
       <div class="lg:col-span-1">
-        <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg p-6">
+        <div
+          class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl md:rounded-3xl shadow-lg p-3 sm:p-4 md:p-6"
+        >
           <div class="text-center">
             <img
               src="{{ profile.photos[0] if profile.photos else 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop&crop=face' }}"
               alt="Profile"
-              class="w-32 h-32 rounded-full object-cover mx-auto mb-4 ring-4 ring-pink-200"
+              class="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full object-cover mx-auto mb-2 sm:mb-3 md:mb-4 ring-4 ring-yellow-200"
             />
-            <h2 class="text-2xl font-bold text-gray-900">{{ profile.name }}</h2>
-            <p class="text-gray-600">{{ profile.age }} years old</p>
-            <p class="text-gray-600">{{ profile.location }}</p>
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
+              {{ profile.name }}
+            </h2>
+            <p class="text-gray-600 text-xs sm:text-sm md:text-base">
+              {{ profile.age }} years old
+            </p>
+            <p class="text-gray-600 text-xs sm:text-sm md:text-base">
+              {{ profile.location }}
+            </p>
           </div>
 
-          <div class="mt-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">About Me</h3>
+          <div class="mt-3 sm:mt-4 md:mt-6">
+            <h3
+              class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 md:mb-3"
+            >
+              About Me
+            </h3>
             <p
-              class="text-gray-600 text-sm leading-relaxed break-words overflow-hidden line-clamp-4"
+              class="text-gray-600 text-xs sm:text-sm leading-relaxed break-words overflow-hidden line-clamp-4"
             >
               {{ profile.bio }}
             </p>
           </div>
 
-          <div class="mt-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">Interests</h3>
-            <div class="flex flex-wrap gap-2">
+          <div class="mt-3 sm:mt-4 md:mt-6">
+            <h3
+              class="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 md:mb-3"
+            >
+              Interests
+            </h3>
+            <div class="flex flex-wrap gap-1 sm:gap-1.5 md:gap-2">
               {% for interest in profile.interests %}
               <span
-                class="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm"
+                class="px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs sm:text-xs md:text-sm"
               >
                 {{ interest }}
               </span>
               {% endfor %}
             </div>
           </div>
-          <h1>ygiuhouhuhoiuhu</h1>
-          <div class="mt-6">
+
+          <div class="mt-3 sm:mt-4 md:mt-6 space-y-2 sm:space-y-3 md:space-y-4">
             <a
               href="{{ url_for('chat', receiver_id=profile['id']) }}"
-              class="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transition-all text-center block"
+              class="w-full py-2 sm:py-2.5 md:py-3 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-lg sm:rounded-xl font-semibold hover:from-yellow-600 hover:to-orange-700 transition-all text-center block text-xs sm:text-sm md:text-base"
             >
               💬 Chat with {{ profile['name'] }}
             </a>
-          </div>
-          <div class="mt-4">
-            <p>Likes: <span id="like-count">{{ likes_count }}</span></p>
+
+            <div class="text-center text-xs sm:text-sm md:text-base">
+              <p>
+                Likes:
+                <span id="like-count" class="font-semibold"
+                  >{{ likes_count }}</span
+                >
+              </p>
+            </div>
 
             {% if session.user_id and session.user_id != profile.id %}
             <button
               id="like-btn"
-              class="w-full py-3 bg-pink-100 text-pink-800 rounded-xl font-semibold hover:bg-pink-200 transition-all text-center block"
+              class="w-full py-2 sm:py-2.5 md:py-3 bg-yellow-100 text-yellow-800 rounded-lg sm:rounded-xl font-semibold hover:bg-yellow-200 transition-all text-center block text-xs sm:text-sm md:text-base"
             >
               {% if already_liked %} 💔 Unlike {% else %} ❤️ Like {% endif %}
             </button>
@@ -83,58 +114,79 @@
         </div>
       </div>
 
+      <!-- Right Column - Stats and Photos -->
       <div class="lg:col-span-2">
-        <div class="space-y-6">
-          <div class="grid grid-cols-3 gap-4">
+        <div class="space-y-3 sm:space-y-4 md:space-y-6">
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-3 xs:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+              class="bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 text-center"
             >
               <i
                 data-lucide="users"
-                class="h-8 w-8 text-pink-500 mx-auto mb-2"
+                class="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-yellow-500 mx-auto mb-1 sm:mb-1 md:mb-2"
               ></i>
-              <div class="text-2xl font-bold text-gray-900">
+              <div
+                class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900"
+              >
                 {{match_count}}
               </div>
-              <div class="text-gray-600 text-sm">Matches</div>
+              <div class="text-gray-600 text-xs sm:text-xs md:text-sm">
+                Matches
+              </div>
             </div>
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+              class="bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 text-center"
             >
               <i
                 data-lucide="message-circle"
-                class="h-8 w-8 text-purple-500 mx-auto mb-2"
+                class="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-orange-500 mx-auto mb-1 sm:mb-1 md:mb-2"
               ></i>
-              <div class="text-2xl font-bold text-gray-900">
+              <div
+                class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900"
+              >
                 {{messages_count}}
               </div>
-              <div class="text-gray-600 text-sm">Messages</div>
+              <div class="text-gray-600 text-xs sm:text-xs md:text-sm">
+                Messages
+              </div>
             </div>
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+              class="bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 text-center"
             >
               <i
                 data-lucide="star"
-                class="h-8 w-8 text-yellow-500 mx-auto mb-2"
+                class="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-yellow-500 mx-auto mb-1 sm:mb-1 md:mb-2"
               ></i>
-              <div class="text-2xl font-bold text-gray-900">
+              <div
+                class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900"
+              >
                 {{ likes_count }}
               </div>
-              <div class="text-gray-600 text-sm">Likes</div>
+              <div class="text-gray-600 text-xs sm:text-xs md:text-sm">
+                Likes
+              </div>
             </div>
           </div>
 
-          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">
+          <!-- Photo Gallery -->
+          <div
+            class="bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6"
+          >
+            <h3
+              class="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4"
+            >
               {{ profile.name }}'s Photos
             </h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div
+              class="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2 md:gap-4"
+            >
               {% for photo in profile.photos %}
               <div class="relative aspect-w-1 aspect-h-1">
                 <img
                   src="{{ photo }}"
                   alt="User photo"
-                  class="w-full h-full object-cover rounded-xl shadow-md cursor-pointer"
+                  class="w-full h-full object-cover rounded-md sm:rounded-lg md:rounded-xl shadow-md cursor-pointer"
                   onclick="openLightbox('{{ photo }}')"
                 />
               </div>
@@ -147,19 +199,25 @@
   </div>
 </div>
 
+<!-- Lightbox Modal -->
 <div
   id="lightbox-modal"
-  class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50"
+  class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50 p-2 sm:p-3 md:p-4"
 >
   <span
     id="close-lightbox"
-    class="absolute top-4 right-4 text-white text-3xl cursor-pointer"
+    class="absolute top-2 sm:top-3 md:top-4 right-2 sm:right-3 md:right-4 text-white text-2xl sm:text-3xl cursor-pointer"
     >&times;</span
   >
-  <img id="lightbox-image" src="" class="max-w-full max-h-full" />
+  <img
+    id="lightbox-image"
+    src=""
+    class="max-w-full max-h-full rounded-md sm:rounded-lg md:rounded-xl"
+  />
 </div>
 
 <script>
+  // Like functionality
   const likeBtn = document.getElementById("like-btn");
   likeBtn?.addEventListener("click", async () => {
     try {
@@ -168,23 +226,14 @@
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
-
       if (data.success) {
         const countEl = document.getElementById("like-count");
-        let count = parseInt(countEl.innerText);
-
         if (data.unliked) {
           likeBtn.innerHTML = "❤️ Like";
-          countEl.innerText = data.likes_count;
         } else {
           likeBtn.innerHTML = "💔 Unlike";
-          countEl.innerText = data.likes_count;
-
-          if (data.match) {
-            // Show a simple alert for match
-            alert("🎉 It's a match!");
-          }
         }
+        countEl.innerText = data.likes_count;
       } else {
         alert(data.error || "Something went wrong.");
       }
@@ -200,11 +249,30 @@
     const img = document.getElementById("lightbox-image");
     img.src = url;
     modal.classList.remove("hidden");
+    // Prevent body scrolling when modal is open
+    document.body.style.overflow = "hidden";
   }
 
   document.getElementById("close-lightbox").addEventListener("click", () => {
     document.getElementById("lightbox-modal").classList.add("hidden");
+    // Restore body scrolling
+    document.body.style.overflow = "auto";
+  });
+
+  // Close lightbox when clicking outside the image
+  document.getElementById("lightbox-modal").addEventListener("click", (e) => {
+    if (e.target.id === "lightbox-modal") {
+      document.getElementById("lightbox-modal").classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
+  });
+
+  // Close lightbox with Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      document.getElementById("lightbox-modal").classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
   });
 </script>
-
 {% endblock %}

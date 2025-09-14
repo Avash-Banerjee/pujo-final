@@ -1,60 +1,72 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
 <div class="max-w-2xl mx-auto p-6">
   <div class="flex items-center justify-between mb-6">
     <a
       href="{{ url_for('dashboard') }}"
-      class="text-pink-500 hover:text-pink-600 transition-colors duration-200"
+      class="text-yellow-500 hover:text-yellow-600 transition-colors duration-200"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M10 19l-7-7m0 0l7-7m-7 7h18"
-        />
+      <!-- back button -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+           fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
       </svg>
     </a>
-    <h2
-      class="text-2xl font-bold text-gray-800 dark:text-gray-100 flex-grow text-center"
-    >
+    <h2 class="text-2xl font-bold text-yellow-800  flex-grow text-center">
       Discover Profiles
     </h2>
   </div>
+
+  <!-- 🔍 Search Bar -->
+  <form method="GET" action="{{ url_for('see_other') }}" class="mb-6">
+    <input
+      type="text"
+      name="q"
+      value="{{ q or '' }}"
+      placeholder="Search by name..."
+      class="w-full px-4 py-2 rounded-lg border border-orange-300 
+             bg-yellow-50  text-yellow-900 
+             focus:outline-none focus:ring-2 focus:ring-orange-500"
+    />
+  </form>
 
   <div class="space-y-4">
     {% for user in users %}
     <a
       href="{{ url_for('view_profile', user_id=user.id) }}"
-      class="block bg-white dark:bg-gray-900 rounded-2xl shadow hover:shadow-lg p-4 transition cursor-pointer"
+      class="block bg-yellow-100 border-2 border-orange-500 rounded-2xl shadow hover:shadow-lg p-4 transition cursor-pointer"
+
     >
       <div class="flex items-center space-x-4">
         <img
           src="{{ user.photos[0] }}"
           alt="Profile"
-          class="h-16 w-16 rounded-full object-cover border-2 border-pink-500"
+          class="h-16 w-16 rounded-full object-cover border-2 border-yellow-500"
         />
 
         <div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 class="text-lg font-semibold text-yellow-900 ">
             {{ user.name }}
           </h3>
 
-          <p class="text-sm text-gray-500 dark:text-gray-400">
+          <p class="text-sm text-yellow-500 ">
             {{ user.age }} years
           </p>
 
+           <p class="text-sm text-yellow-500 ">
+            {{ user.location }}
+          </p>
+
           {% if user.extra_field %}
-          <p class="text-sm text-gray-400 italic">{{ user.extra_field }}</p>
+          <p class="text-sm text-yellow-400 italic">{{ user.extra_field }}</p>
           {% endif %}
         </div>
       </div>
     </a>
+    {% else %}
+    <p class="text-yellow-500  text-center">
+      No profiles found.
+    </p>
     {% endfor %}
   </div>
 </div>

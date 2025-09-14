@@ -3,7 +3,7 @@
   <div class="max-w-md w-full">
     <a
       href="{{ url_for('landing') }}"
-      class="flex items-center text-gray-600 hover:text-pink-600 mb-8 transition-colors"
+      class="flex items-center text-gray-600 hover:text-yellow-600 mb-8 transition-colors"
     >
       <i data-lucide="arrow-left" class="h-5 w-5 mr-2"></i>
       Back to Home
@@ -11,9 +11,9 @@
 
     <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
       <div class="text-center mb-8">
-        <i data-lucide="heart" class="h-12 w-12 text-pink-500 mx-auto mb-4"></i>
+        <i data-lucide="heart" class="h-12 w-12 text-yellow-500 mx-auto mb-4"></i>
         <h2 class="text-3xl font-bold text-gray-900 mb-2">
-          {{ 'Welcome Back' if mode == 'login' else 'Join LoveConnect' }}
+          {{ 'Welcome Back' if mode == 'login' else 'Join Sharodiya-Swipe' }}
         </h2>
         <p class="text-gray-600">
           {{ 'Sign in to continue your journey' if mode == 'login' else 'Create
@@ -46,7 +46,7 @@
             type="email"
             name="email"
             required
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
             placeholder="Enter your email"
           />
           <p class="text-red-500 text-sm mt-1 error-message"></p>
@@ -63,7 +63,7 @@
               id="password"
               required
               minlength="8"
-              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all pr-12"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all pr-12"
               placeholder="Enter your password"
             />
             <button
@@ -88,7 +88,7 @@
               name="confirm_password"
               id="confirm_password"
               required
-              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all pr-12"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all pr-12"
               placeholder="Confirm your password"
             />
             <button
@@ -105,7 +105,7 @@
 
         <button
           type="submit"
-          class="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-lg"
+          class="w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-xl font-semibold hover:from-yellow-600 hover:to-orange-700 transform hover:scale-105 transition-all shadow-lg"
         >
           {{ 'Sign In' if mode == 'login' else 'Create Account' }}
         </button>
@@ -117,7 +117,7 @@
           account? " }}
           <a
             href="{{ url_for('signup') if mode == 'login' else url_for('login') }}"
-            class="text-pink-600 hover:text-pink-700 font-semibold"
+            class="text-yellow-600 hover:text-yellow-700 font-semibold"
           >
             {{ 'Sign up' if mode == 'login' else 'Sign in' }}
           </a>

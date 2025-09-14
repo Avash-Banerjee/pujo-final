@@ -1,204 +1,201 @@
-{% extends 'base.html' %} {% block content %}
-<div class="min-h-screen">
-  <!-- Header -->
-  <header class="px-4 py-6 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <i data-lucide="heart" class="h-8 w-8 text-pink-500"></i>
-        <span
-          class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
-        >
-          LoveConnect
-        </span>
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="px-4 py-4 sm:px-6 lg:px-8 bg-white shadow-md">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-2" data-aos="fade-down">
+        <i data-lucide="heart" class="h-7 w-7 text-red-500"></i>
+        <span class="text-2xl font-bold text-red-500">Sharodiya-Swipe</span>
       </div>
-      <div class="flex space-x-4">
-        <a
-          href="{{ url_for('login') }}"
-          class="px-4 py-2 text-gray-700 hover:text-pink-600 font-medium transition-colors"
-        >
-          Sign In
+      <div class="flex space-x-3" data-aos="fade-down" data-aos-delay="100">
+        <a href="{{ url_for('login') }}" class="px-4 py-2 text-gray-700 hover:text-red-500 font-medium transition-colors">
+          Already a Member
         </a>
-        <a
-          href="{{ url_for('signup') }}"
-          class="px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-medium hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-lg"
-        >
-          Get Started
+        <a href="{{ url_for('signup') }}" class="px-6 py-2 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 transition-colors">
+          Join Us
         </a>
       </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="px-4 py-20 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto text-center">
-      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">
-        Find Your
-        <span
-          class="block bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
-        >
-          Perfect Match
-        </span>
-      </h1>
-      <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-        Connect with like-minded people in your area. Build meaningful
-        relationships through our smart matching algorithm and authentic
-        profiles.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="{{ url_for('signup') }}"
-          class="px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full text-lg font-semibold hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-xl"
-        >
-          Start Dating Today
+  <section class="relative h-[80vh] flex flex-col justify-center items-center text-center text-white bg-cover bg-[center_top_30%]"
+           style="background-image: url('{{ url_for('static', filename='images/hero.png') }}');">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="relative max-w-xl px-4" data-aos="fade-up">
+     <h2 class="text-4xl md:text-6xl font-bold mb-4" style="font-family: 'Great Vibes', cursive;">
+  Tumi Ami E Ponchomi Thakbo Pashe Tai
+</h2>
+
+      <p class="text-lg md:text-2xl mb-6">Find your festive flame this Durga Puja</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+        <a href="{{ url_for('signup') }}" class="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-full transition">
+          Start Dating Today!
         </a>
-        <a
-          href="{{ url_for('login') }}"
-          class="px-8 py-4 border-2 border-pink-500 text-pink-600 rounded-full text-lg font-semibold hover:bg-pink-50 transition-colors"
-        >
-          Already a Member?
+        <a href="{{ url_for('login') }}" class="px-6 py-3 bg-white/90 hover:bg-white text-red-500 font-semibold rounded-full transition">
+          Already a Member!
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section class="px-4 py-20 sm:px-6 lg:px-8 bg-white/50 backdrop-blur-sm">
-    <div class="max-w-7xl mx-auto">
-      <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">
-        Why Choose LoveConnect?
-      </h2>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div
-          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
-        >
-          <div
-            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i data-lucide="zap" class="h-8 w-8 text-white"></i>
-          </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">
-            Smart Matching
-          </h3>
-          <p class="text-gray-600">
-            Advanced AI algorithm that learns your preferences and suggests the
-            most compatible matches.
-          </p>
-        </div>
+  <!-- About / Cards Section -->
+  <section class="px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    <!-- Left: Overlapping Cards -->
+    <div class="relative flex justify-center md:justify-start h-96">
+      <!-- Card 1 -->
+      <div class="absolute top-0 left-6 w-56 sm:w-64 min-h-[280px] bg-white rounded-2xl shadow-lg border border-red-100 rotate-[-6deg] hover:rotate-[-3deg] transition-transform flex flex-col items-center justify-center text-center p-5" 
+           data-aos="fade-right">
+        <img src="{{ url_for('static', filename='images/woman.png') }}" alt="Person 1" class="w-24 h-24 rounded-full object-cover border-4 border-red-200 mb-3">
+        <h3 class="text-lg font-semibold">Ananya, 23</h3>
+        <p class="text-gray-600 text-sm">Pandal-hopping, street food</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="absolute bottom-0 right-6 w-56 sm:w-64 min-h-[280px] bg-white rounded-2xl shadow-lg border border-red-100 rotate-[6deg] hover:rotate-[3deg] transition-transform flex flex-col items-center justify-center text-center p-5"
+           data-aos="fade-left" data-aos-delay="200">
+        <img src="{{ url_for('static', filename='images/man.png') }}" alt="Person 2" class="w-24 h-24 rounded-full object-cover border-4 border-red-200 mb-3">
+        <h3 class="text-lg font-semibold">Rohit, 25</h3>
+        <p class="text-gray-600 text-sm">Music, fashion, pujo selfies</p>
+      </div>
+    </div>
 
-        <div
-          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
-        >
-          <div
-            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i data-lucide="shield" class="h-8 w-8 text-white"></i>
-          </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">
-            Safe & Secure
-          </h3>
-          <p class="text-gray-600">
-            Verified profiles, photo verification, and 24/7 moderation to ensure
-            a safe dating environment.
-          </p>
-        </div>
+    <!-- Right: Text -->
+    <div class="text-center md:text-left" data-aos="fade-up" data-aos-delay="300">
+      <h2 class="text-3xl font-bold text-red-500 mb-4">What We Do</h2>
+      <p class="text-gray-700 leading-relaxed">
+        We bring people together during the most magical time of the year — Durga Puja.
+        Whether you're pandal-hopping, enjoying bhog, or dancing to the dhaak beats,
+        Sharodiya-Swipe helps you find someone special to share the moments with.
+      </p>
+    </div>
+  </section>
 
-        <div
-          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
-        >
-          <div
-            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i data-lucide="map-pin" class="h-8 w-8 text-white"></i>
+  <!-- Features Section - Why PujoMatch -->
+  <section id="features" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-16" data-aos="fade-up">Why Sharodiya-Swipe?</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
+            <i data-lucide="users" class="text-red-500 w-8 h-8"></i>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">
-            Local Connections
-          </h3>
-          <p class="text-gray-600">
-            Find matches in your area with customizable distance preferences for
-            convenient meetups.
-          </p>
+          <h3 class="text-xl font-bold mb-3">No More Third Wheeling</h3>
+          <p class="text-gray-600">Find your matching Pujo outfit partner so you're not the odd one out in group photos.</p>
         </div>
-
-        <div
-          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
-        >
-          <div
-            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i data-lucide="message-circle" class="h-8 w-8 text-white"></i>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6">
+            <i data-lucide="map-pin" class="text-yellow-500 w-8 h-8"></i>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">
-            Rich Conversations
-          </h3>
-          <p class="text-gray-600">
-            Engaging chat features with photo sharing, voice messages, and video
-            calls.
-          </p>
+          <h3 class="text-xl font-bold mb-3">Pandal-Hopping Together</h3>
+          <p class="text-gray-600">Connect with people visiting the same pandals as you with our location-based matching.</p>
         </div>
-
-        <div
-          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
-        >
-          <div
-            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i data-lucide="users" class="h-8 w-8 text-white"></i>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="300">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+            <i data-lucide="message-circle" class="text-blue-500 w-8 h-8"></i>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">
-            Active Community
-          </h3>
-          <p class="text-gray-600">
-            Join millions of singles looking for meaningful connections and
-            lasting relationships.
-          </p>
+          <h3 class="text-xl font-bold mb-3">Pujo-Themed Icebreakers</h3>
+          <p class="text-gray-600">Special conversation starters about favorite pandals, dhaki performances, and more.</p>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div
-          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
-        >
-          <div
-            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i data-lucide="heart" class="h-8 w-8 text-white"></i>
-          </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">
-            Success Stories
+  <!-- FAQ Section -->
+  <section id="faq" class="py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-16" data-aos="fade-up">Frequently Asked Questions</h2>
+      <div class="space-y-6">
+        <div class="faq-item bg-white p-6 rounded-xl shadow-md hover:transform hover:-translate-y-1 hover:shadow-lg transition-all duration-300" data-aos="fade-up">
+          <h3 class="text-xl font-bold mb-3 flex items-center">
+            <i data-lucide="help-circle" class="text-red-500 mr-3"></i>
+            Why should I join this app?
           </h3>
-          <p class="text-gray-600">
-            Thousands of couples have found love through our platform. You could
-            be next!
-          </p>
+          <p class="text-gray-600 pl-8">Because let's be real, Pujo is not just about pandal-hopping. It's about having someone to share it with. Tired of seeing couples in matching outfits while you third-wheel? This app gives you a shot at changing that.</p>
+        </div>
+        <div class="faq-item bg-white p-6 rounded-xl shadow-md hover:transform hover:-translate-y-1 hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+          <h3 class="text-xl font-bold mb-3 flex items-center">
+            <i data-lucide="help-circle" class="text-red-500 mr-3"></i>
+            Why only for Pujo?
+          </h3>
+          <p class="text-gray-600 pl-8">Because loneliness hits hardest during Pujo nights. Everyone's out, vibing, clicking couple selfies, and you're standing there holding your kurta pocket. This app flips that story for you.</p>
+        </div>
+        <div class="faq-item bg-white p-6 rounded-xl shadow-md hover:transform hover:-translate-y-1 hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+          <h3 class="text-xl font-bold mb-3 flex items-center">
+            <i data-lucide="help-circle" class="text-red-500 mr-3"></i>
+            What's the risk if I don't join the waitlist?
+          </h3>
+          <p class="text-gray-600 pl-8">Nothing. Except another year of "Ebaro single?" jokes from your friends and aunties asking "biye kobe?" while you smile awkwardly.</p>
+        </div>
+        <div class="faq-item bg-white p-6 rounded-xl shadow-md hover:transform hover:-translate-y-1 hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+          <h3 class="text-xl font-bold mb-3 flex items-center">
+            <i data-lucide="help-circle" class="text-red-500 mr-3"></i>
+            How do matches work?
+          </h3>
+          <p class="text-gray-600 pl-8">Swipe → Match → Chat. Same familiar flow, but with Pujo-themed vibes, filters, and location-based discovery so you can connect with people nearby while pandal-hopping.</p>
+        </div>
+        <div class="faq-item bg-white p-6 rounded-xl shadow-md hover:transform hover:-translate-y-1 hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="400">
+          <h3 class="text-xl font-bold mb-3 flex items-center">
+            <i data-lucide="help-circle" class="text-red-500 mr-3"></i>
+            Is it free to use?
+          </h3>
+          <p class="text-gray-600 pl-8">Yes, completely free! We believe love (or at least Pujo companionship) shouldn't come with a price tag.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA Section -->
-  <section class="px-4 py-20 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-4xl font-bold text-gray-900 mb-6">Ready to Find Love?</h2>
-      <p class="text-xl text-gray-600 mb-8">
-        Join thousands of singles who have found their perfect match on
-        LoveConnect
-      </p>
-      <a
-        href="{{ url_for('signup') }}"
-        class="px-12 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full text-xl font-semibold hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-xl"
-      >
-        Join LoveConnect Now
-      </a>
+  <section class="py-16 bg-red-500 text-white">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-6" data-aos="fade-up">Ready to Make This Pujo Special?</h2>
+      <p class="text-xl mb-8" data-aos="fade-up" data-aos-delay="100">Join thousands of others finding their perfect Pujo partner</p>
+      <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+        <a href="{{ url_for('signup') }}" class="px-8 py-3 rounded-full bg-white text-red-500 font-bold hover:bg-gray-100 transition" data-aos="fade-up" data-aos-delay="200">
+          Sign Up Now
+        </a>
+        <button class="px-8 py-3 rounded-full border-2 border-white text-white font-bold hover:bg-white hover:text-red-500 transition" data-aos="fade-up" data-aos-delay="300">
+          Learn More
+        </button>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="px-4 py-8 sm:px-6 lg:px-8 bg-gray-900">
-    <div class="max-w-7xl mx-auto text-center">
-      <div class="flex items-center justify-center space-x-2 mb-4">
-        <i data-lucide="heart" class="h-6 w-6 text-pink-500"></i>
-        <span class="text-xl font-bold text-white">LoveConnect</span>
-      </div>
-      <p class="text-gray-400">© 2025 LoveConnect. All rights reserved.</p>
+<footer class="bg-gray-900 text-white py-8">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <!-- Brand -->
+    <div class="flex justify-center items-center space-x-2 mb-4">
+      <i data-lucide="heart" class="text-red-500 w-6 h-6"></i>
+      <span class="font-bold text-lg">Sharodiya-Swipe</span>
     </div>
-  </footer>
+    <!-- Quick Links -->
+    <div class="mb-4">
+      <a href="#" class="text-gray-400 hover:text-white mx-2 transition">Home</a>
+      <a href="#features" class="text-gray-400 hover:text-white mx-2 transition">Features</a>
+      <a href="#faq" class="text-gray-400 hover:text-white mx-2 transition">FAQs</a>
+    </div>
+    <!-- Copyright & Design -->
+    <p class="text-gray-400 text-sm">&copy; Designed by Avash Banerjee & Sayan Bose | +91 8336027886 / +91 6291001088 </p>
+  </div>
+</footer>
+
+
+  <!-- Initialize AOS -->
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+  </script>
+
+  <style>
+    .faq-item {
+      transition: all 0.3s ease;
+    }
+  </style>
+
 </div>
 {% endblock %}

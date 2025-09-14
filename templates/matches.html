@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="px-4 py-4 sm:px-6 lg:px-8 bg-white shadow-md">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-2" data-aos="fade-down">
+        <i data-lucide="heart" class="h-7 w-7 text-orange-600"></i>
+        <span class="text-2xl font-bold text-gray-900">LoveConnect</span>
+      </div>
+      <div class="flex space-x-3" data-aos="fade-down" data-aos-delay="100">
+        <a href="{{ url_for('login') }}" class="px-4 py-2 text-gray-700 hover:text-orange-600 font-medium transition-colors">
+          Sign In
+        </a>
+        <a href="{{ url_for('signup') }}" class="px-6 py-2 bg-orange-600 text-white rounded-full font-medium hover:bg-orange-700 transition-colors">
+          Get Started
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative h-[80vh] flex flex-col justify-center items-center text-center text-white bg-cover bg-[center_top_30%]"
+           style="background-image: url('{{ url_for('static', filename='images/hero.png') }}');">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="relative max-w-xl px-4" data-aos="fade-up">
+      <h2 class="text-4xl md:text-6xl font-bold mb-4">𝒜𝓂𝒾 𝓉𝓊𝓂𝒾 ℯ𝒾 𝓅ℴ𝓃𝒸𝒽ℴ𝓂ℴ</h2>
+      <p class="text-lg md:text-2xl mb-6">Find your festive flame this Durga Puja</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+        <button class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-full transition">
+          Start Dating Today!
+        </button>
+        <button class="px-6 py-3 bg-white/90 hover:bg-white text-orange-600 font-semibold rounded-full transition">
+          Already a Member!
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- About / Cards Section -->
+  <section class="px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    <!-- Left: Overlapping Cards -->
+    <div class="relative flex justify-center md:justify-start h-96">
+      <!-- Card 1 -->
+      <div class="absolute top-0 left-6 w-56 sm:w-64 min-h-[280px] bg-white rounded-2xl shadow-lg border border-orange-100 rotate-[-6deg] hover:rotate-[-3deg] transition-transform flex flex-col items-center justify-center text-center p-5" 
+           data-aos="fade-right">
+        <img src="{{ url_for('static', filename='images/woman.png') }}" alt="Person 1" class="w-24 h-24 rounded-full object-cover border-4 border-orange-200 mb-3">
+        <h3 class="text-lg font-semibold">Ananya, 23</h3>
+        <p class="text-gray-600 text-sm">Pandal-hopping, street food</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="absolute bottom-0 right-6 w-56 sm:w-64 min-h-[280px] bg-white rounded-2xl shadow-lg border border-orange-100 rotate-[6deg] hover:rotate-[3deg] transition-transform flex flex-col items-center justify-center text-center p-5"
+           data-aos="fade-left" data-aos-delay="200">
+        <img src="{{ url_for('static', filename='images/man.png') }}" alt="Person 2" class="w-24 h-24 rounded-full object-cover border-4 border-orange-200 mb-3">
+        <h3 class="text-lg font-semibold">Rohit, 25</h3>
+        <p class="text-gray-600 text-sm">Music, fashion, pujo selfies</p>
+      </div>
+    </div>
+
+    <!-- Right: Text -->
+    <div class="text-center md:text-left" data-aos="fade-up" data-aos-delay="300">
+      <h2 class="text-3xl font-bold text-orange-600 mb-4">What We Do</h2>
+      <p class="text-gray-700 leading-relaxed">
+        We bring people together during the most magical time of the year — Durga Puja.
+        Whether you're pandal-hopping, enjoying bhog, or dancing to the dhaak beats,
+        PujoMingle helps you find someone special to share the moments with.
+      </p>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="px-4 py-16 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl text-orange-600 sm:text-4xl font-bold text-center text-gray-900 mb-12" data-aos="fade-up">Why Choose LoveConnect?</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% set features = [
+          {'icon':'zap','title':'Smart Matching','desc':'AI learns your preferences and suggests compatible matches.'},
+          {'icon':'shield','title':'Safe & Secure','desc':'Verified profiles, photo checks, and 24/7 moderation.'},
+          {'icon':'map-pin','title':'Local Connections','desc':'Find matches nearby with custom distance filters.'},
+          {'icon':'message-circle','title':'Rich Conversations','desc':'Chat, photo sharing, voice and video calls.'},
+          {'icon':'users','title':'Active Community','desc':'Join millions looking for real relationships.'},
+          {'icon':'heart','title':'Success Stories','desc':'Thousands found love on our platform — you could too!'},
+        ] %}
+        {% for f in features %}
+        <div class="text-center p-6 rounded-xl bg-white shadow-sm border border-gray-100 hover:shadow-md transition-all" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+          <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <i data-lucide="{{ f.icon }}" class="h-7 w-7 text-orange-600"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ f.title }}</h3>
+          <p class="text-gray-600 text-sm">{{ f.desc }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="px-6 py-16 bg-orange-50 overflow-hidden" id="faq">
+    <h2 class="text-3xl font-bold text-center text-orange-600 mb-10" data-aos="fade-up">FAQ</h2>
+    <div class="relative">
+      <div class="flex space-x-6 animate-scroll">
+        <div class="flex space-x-6">
+          {% for faq in [
+            {'q':'Why should I join this app?','a':'Because Pujo is not just about pandal-hopping. It’s about having someone to share it with.'},
+            {'q':'Why only for Pujo?','a':'Loneliness hits hardest during Pujo nights. Everyone’s out, vibing, clicking couple selfies.'},
+            {'q':'What’s the risk if I don’t join the waitlist?','a':'Nothing. Except another year of jokes from your friends and aunties.'},
+            {'q':'How do matches work?','a':'Swipe → Match → Chat. Same familiar flow with Pujo-themed vibes.'},
+            {'q':'Is it free to use?','a':'Yes.'}
+          ] %}
+          <div class="min-w-[300px] sm:min-w-[350px] bg-white rounded-xl shadow p-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+            <h3 class="font-semibold text-lg text-orange-600 mb-2">{{ faq.q }}</h3>
+            <p class="text-gray-700">{{ faq.a }}</p>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Duplicate for seamless scroll -->
+        <div class="flex space-x-6">
+          {% for faq in [
+            {'q':'Why should I join this app?','a':'Because Pujo is not just about pandal-hopping. It’s about having someone to share it with.'},
+            {'q':'Why only for Pujo?','a':'Loneliness hits hardest during Pujo nights. Everyone’s out, vibing, clicking couple selfies.'},
+            {'q':'What’s the risk if I don’t join the waitlist?','a':'Nothing. Except another year of jokes from your friends and aunties.'},
+            {'q':'How do matches work?','a':'Swipe → Match → Chat. Same familiar flow with Pujo-themed vibes.'},
+            {'q':'Is it free to use?','a':'Yes.'}
+          ] %}
+          <div class="min-w-[300px] sm:min-w-[350px] bg-white rounded-xl shadow p-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+            <h3 class="font-semibold text-lg text-orange-600 mb-2">{{ faq.q }}</h3>
+            <p class="text-gray-700">{{ faq.a }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="px-4 py-16 sm:px-6 lg:px-8 bg-gray-50" data-aos="fade-up">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Ready to Find Love?</h2>
+      <p class="text-lg text-gray-600 mb-6">
+        Join thousands of singles who have found their perfect match on LoveConnect.
+      </p>
+      <a href="{{ url_for('signup') }}" class="px-10 py-4 bg-orange-600 text-white rounded-full text-lg font-semibold hover:bg-orange-700 transition-colors">
+        Join LoveConnect Now
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-4 py-8 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+    © 2025 LoveConnect. All rights reserved.
+  </footer>
+
+  <!-- Scroll animation for FAQ -->
+  <style>
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-scroll {
+      display: flex;
+      width: max-content;
+      animation: scroll 40s linear infinite;
+    }
+  </style>
+
+  <!-- Initialize AOS -->
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+  </script>
+
+</div>
+{% endblock %}
+

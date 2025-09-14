@@ -3,7 +3,7 @@
   <div class="mb-4">
     <a
       href="{{ url_for('dashboard') }}"
-      class="flex items-center text-gray-600 hover:text-pink-600 transition-colors"
+      class="flex items-center text-gray-600 hover:text-yellow-600 transition-colors"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,20 +23,21 @@
     </a>
   </div>
 
-  <h2 class="text-2xl font-bold text-gray-800 mb-6">Your Chats</h2>
+  <h2 class="text-2xl font-bold text-orange-500 mb-6">Your Chats</h2>
 
   <div class="space-y-4">
     {% if users %} {% for user in users %}
     <a
       href="{{ url_for('chat', receiver_id=user.id) }}"
-      class="block bg-white dark:bg-gray-900 rounded-2xl shadow hover:shadow-lg p-4 transition cursor-pointer"
+      class="block bg-yellow-100 border-2 border-orange-500 rounded-2xl shadow hover:shadow-lg p-4 transition cursor-pointer"
+
     >
       <div class="flex items-center space-x-4">
         <div class="relative">
           <img
             src="{{ user.photos[0] }}"
             alt="Profile"
-            class="h-16 w-16 rounded-full object-cover border-2 border-pink-500"
+            class="h-16 w-16 rounded-full object-cover border-2 border-yellow-500"
           />
           {% set unread = unread_counts.get(user.id, 0) %} {% if unread > 0 %}
           <span
@@ -48,14 +49,12 @@
         </div>
 
         <div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 class="text-lg font-semibold text-orange-500">
             {{ user.name }}
           </h3>
 
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            {{ user.age }} years old
-          </p>
-          <p class="text-sm text-gray-400 italic">
+
+          <p class="text-sm text-orange-400 italic">
             Last message: "{{ user.last_message }}"
           </p>
         </div>

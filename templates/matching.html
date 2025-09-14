@@ -53,7 +53,8 @@
   }
 </style>
 
-<div class="flex justify-center items-center h-screen bg-gray-100 p-4">
+<div class="flex justify-center items-center h-screen bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 p-4">
+
   <div id="no-profiles" class="text-gray-600 text-center text-xl hidden">
     No profiles available. Try again later!
   </div>
@@ -63,7 +64,7 @@
     class="hidden fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50"
   >
     <div
-      class="animate-spin rounded-full h-16 w-16 border-t-4 border-pink-500 border-solid"
+      class="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-500 border-solid"
     ></div>
   </div>
 
@@ -91,10 +92,11 @@
     </button>
   </div>
 
-  <div
+<div
     id="profile-card"
-    class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden transform scale-100 opacity-100"
-  >
+    class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden transform scale-100 opacity-100 border-4 border-grey"
+>
+
     <div class="profile-image-container rounded-t-2xl">
       <img
         id="profile-pic"
@@ -130,11 +132,11 @@
         </button>
         <button
           onclick="likeProfile()"
-          class="bg-white text-pink-500 rounded-full w-14 h-14 flex items-center justify-center shadow-lg transform transition-transform hover:scale-110 hover:bg-pink-100 focus:outline-none"
+          class="bg-white text-yellow-500 rounded-full w-14 h-14 flex items-center justify-center shadow-lg transform transition-transform hover:scale-110 hover:bg-yellow-100 focus:outline-none"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8 text-pink-500"
+            class="h-8 w-8 text-yellow-500"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -193,14 +195,14 @@
       <div class="flex justify-center space-x-4">
         <button
           onclick="closeMatchCard()"
-          class="bg-pink-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-pink-600 transition-colors"
+          class="bg-yellow-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-yellow-600 transition-colors"
         >
           Keep Swiping
         </button>
         <a
           id="chat-link"
           href="#"
-          class="bg-white text-pink-500 font-bold py-3 px-6 rounded-full shadow-lg hover:bg-gray-200 transition-colors"
+          class="bg-white text-yellow-500 font-bold py-3 px-6 rounded-full shadow-lg hover:bg-gray-200 transition-colors"
         >
           Send a Message
         </a>
@@ -252,7 +254,7 @@
 
   async function likeProfile() {
     if (!currentProfile) return;
-    const res = await fetch(`/like/${currentProfile.id}`, { method: "POST" });
+    const res = await fetch(`/like2/${currentProfile.id}`, { method: "POST" });
     const data = await res.json();
     console.log("Like result:", data);
 

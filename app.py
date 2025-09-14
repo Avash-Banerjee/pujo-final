@@ -17,6 +17,16 @@ def humanize_datetime_filter(dt_string):
     now = datetime.now(timezone.utc)
     return humanize.naturaltime(now - dt)
 
+@app.after_request
+def add_header(response):
+    """
+    Add headers to force the browser not to cache authenticated pages
+    """
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 # Supabase connection
 SUPABASE_URL = "https://uccwrkpdkheliitelkag.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjY3dya3Bka2hlbGlpdGVsa2FnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNDM5OTUsImV4cCI6MjA3MjYxOTk5NX0.fHF4N9m2n5FIGQRbhjxdq9YBolFoVkVJJ5VIzRFL3h8"
@@ -413,6 +423,22 @@ def update_profile():
         except ValueError:
             pass
 
+    # New fields
+    gender = request.form.get("gender")
+    interestedIn = request.form.getlist("interestedIn")  # multiple checkboxes
+    aesthetics = request.form.get("aesthetics")
+    aesthetics_custom = request.form.get("aesthetics_custom")
+    relationship = request.form.get("relationship")
+    relationship_custom = request.form.get("relationship_custom")
+
+    # Handle "Other" overrides
+    if aesthetics == "Other" and aesthetics_custom:
+        aesthetics = aesthetics_custom
+
+    if relationship == "Other" and relationship_custom:
+        relationship = relationship_custom
+
+    # Prepare update data
     update_data = {
         "name": request.form.get("name"),
         "dob": dob_str,
@@ -420,13 +446,21 @@ def update_profile():
         "location": request.form.get("location"),
         "bio": request.form.get("bio"),
         "interests": [i.strip() for i in request.form.get("interests", "").split(',') if i.strip()],
-        "photos": updated_photos
+        "photos": updated_photos,
+        "gender": request.form.get("gender"),
+        "aesthetics": request.form.get("aesthetics_custom") or request.form.get("aesthetics"),
+        "relationship": request.form.get("relationship_custom") or request.form.get("relationship"),
+        "fun_option": request.form.get("fun_option_custom") or request.form.get("fun_option"),
+        "hangout": request.form.get("hangout_custom") or request.form.get("hangout"),
+        "looking_for": request.form.get("looking_for"),
     }
+
 
     supabase.table("profiles").update(update_data).eq("id", user_id).execute()
 
     flash("Profile updated successfully!", "success")
     return redirect(url_for('dashboard'))
+
 
 
 
@@ -499,7 +533,7 @@ def delete_photo():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/see-other')
+@app.route('/see-other', methods=['GET', 'POST'])
 def see_other():
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -518,12 +552,21 @@ def see_other():
         flash("Restricted for VIP users only.", "warning")
         return redirect(url_for('dashboard'))
 
-    # Fetch other profiles if VIP
-    res_profiles = supabase.table("profiles").select("*").neq("id", current_user_id).execute()
+    # --- Search support ---
+    search_query = request.args.get("q", "").strip()
+
+    query = supabase.table("profiles").select("*").neq("id", current_user_id)
+    if search_query:
+        # ilike = case-insensitive LIKE in PostgREST
+        query = query.ilike("name", f"%{search_query}%")
+
+    res_profiles = query.execute()
     profiles = res_profiles.data if res_profiles.data else []
     session['back_url'] = url_for('see_other')
 
-    return render_template("see_other.html", users=profiles)
+    return render_template("see_other.html", users=profiles, q=search_query)
+
+
 
 @app.route('/profile/<user_id>')
 def view_profile(user_id):
@@ -744,6 +787,48 @@ def like(liked_id):
             "unliked": False,
             "likes_count": get_likes_count(liked_id)
         })
+    
+
+@app.route('/like2/<string:liked_id>', methods=['POST'])
+def like2(liked_id):
+    if 'user_id' not in session:
+        return jsonify({"success": False, "error": "Not logged in"}), 401
+    
+    liker_id = session['user_id']
+    if liker_id == liked_id:
+        return jsonify({"success": False, "error": "Cannot like yourself"}), 400
+
+    has_already_liked = has_liked(liker_id, liked_id)
+
+    # If not already liked, add the like first
+    if not has_already_liked:
+        add_like(liker_id, liked_id)
+
+    # Check for mutual match regardless of whether a new like was added or not
+    has_liked_back = has_liked(liked_id, liker_id)
+    match_data = {}
+    if has_liked_back:
+        res_current = supabase.table("profiles").select("photos").eq("id", liker_id).execute()
+        current_user_pic = res_current.data[0]['photos'][0] if res_current.data and res_current.data[0]['photos'] else None
+
+        res_matched = supabase.table("profiles").select("photos").eq("id", liked_id).execute()
+        matched_user_pic = res_matched.data[0]['photos'][0] if res_matched.data and res_matched.data[0]['photos'] else None
+
+        match_data = {
+            "match": True,
+            "current_user_pic": current_user_pic,
+            "matched_user_pic": matched_user_pic
+        }
+    else:
+        match_data = {"match": False}
+
+    return jsonify({
+        "success": True,
+        **match_data,
+        "unliked": False, # 'unliked' is always false as we never remove a like
+        "likes_count": get_likes_count(liked_id)
+    })
+
 
 '''
 @app.route('/start-matching')
@@ -825,14 +910,27 @@ def next_profile():
     if not current_user_gender:
         return jsonify({"error": "Profile not found"}), 404
 
-    opposite_gender = 'female' if current_user_gender.lower() == 'male' else 'male'
+    gender = current_user_gender.lower()
+
+    if gender == "male":
+        opposite_genders = ["female", "non-binary", "prefer-not-to-say"]
+    elif gender == "female":
+        opposite_genders = ["male", "non-binary", "prefer-not-to-say"]
+    elif gender == "non-binary":
+        opposite_genders = ["male", "female", "prefer-not-to-say"]
+    elif gender == "prefer-not-to-say":
+        opposite_genders = ["male", "female", "non-binary"]
+    else:
+        opposite_genders = ["male", "female", "non-binary", "prefer-not-to-say"]  # fallback
 
     # Fetch potential matches
-    potential_matches_res = supabase.table("profiles") \
-        .select("id, name, age, bio, photos") \
-        .eq("gender", opposite_gender) \
-        .neq("id", current_user_id) \
+    potential_matches_res = (
+        supabase.table("profiles")
+        .select("id, name, age, bio, photos")
+        .in_("gender", opposite_genders)     # ✅ fix here
+        .neq("id", current_user_id)
         .execute()
+    )
 
     potential_matches = potential_matches_res.data
     if not potential_matches:
@@ -843,11 +941,13 @@ def next_profile():
     now = datetime.now(timezone.utc).isoformat()
 
     # Log in match_history (if unique)
-    existing_match = supabase.table("match_history") \
-        .select("id") \
-        .eq("user_id", current_user_id) \
-        .eq("matched_id", matched_profile['id']) \
+    existing_match = (
+        supabase.table("match_history")
+        .select("id")
+        .eq("user_id", current_user_id)
+        .eq("matched_id", matched_profile['id'])
         .execute()
+    )
 
     if not existing_match.data:
         supabase.table("match_history").insert({
@@ -856,7 +956,7 @@ def next_profile():
             "created_at": now
         }).execute()
 
-    # Always log in match_activity (so recent activity shows it)
+    # Always log in match_activity
     supabase.table("match_activity").insert({
         "user_id": current_user_id,
         "matched_id": matched_profile['id'],
@@ -871,9 +971,87 @@ def next_profile():
 
     return jsonify(matched_profile)
 
+@app.route("/get_matches")
+def get_matches():
+    if "user_id" not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    user_id = session["user_id"]
+
+    # Step 1: Get matches where matched_id = current user
+    response = supabase.table("match_history") \
+        .select("*") \
+        .eq("matched_id", user_id) \
+        .execute()
+
+    match_rows = response.data
+
+    # Step 2: Collect the IDs of the "other" users (who initiated the match)
+    other_user_ids = [row["user_id"] for row in match_rows]
+
+    # Step 3: Fetch profile details of the other users
+    profiles = []
+    if other_user_ids:
+        profiles_resp = supabase.table("profiles") \
+            .select("id, name, photos") \
+            .in_("id", other_user_ids) \
+            .execute()
+        profiles = profiles_resp.data
+
+    return jsonify(profiles)
+
+
+
+@app.route('/get_message_partners')
+def get_message_partners():
+    if 'user_id' not in session:
+        return jsonify([])
+
+    current_user_id = session['user_id']
+
+    res_messages = (
+        supabase.table("messages")
+        .select("sender_id, receiver_id")
+        .or_(f"sender_id.eq.{current_user_id},receiver_id.eq.{current_user_id}")
+        .execute()
+    )
+    all_messages = res_messages.data if res_messages.data else []
+
+    partner_ids = set()
+    for msg in all_messages:
+        partner_ids.add(msg['sender_id'] if msg['sender_id'] != current_user_id else msg['receiver_id'])
+
+    res_profiles = supabase.table("profiles").select("id, name, photos").in_("id", list(partner_ids)).execute()
+    return jsonify(res_profiles.data)
+
+
+@app.route('/get_likes')
+def get_likes():
+    if 'user_id' not in session:
+        return jsonify([])
+
+    current_user_id = session['user_id']
+
+    res_likes = (
+        supabase.table("likes")
+        .select("liker_id, liked_id")
+        .eq("liked_id", current_user_id)
+        .execute()
+    )
+    likes = res_likes.data if res_likes.data else []
+
+    liker_ids = [l['liker_id'] for l in likes]
+
+    res_profiles = supabase.table("profiles").select("id, name, photos").in_("id", liker_ids).execute()
+    return jsonify(res_profiles.data)
+
+
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
+    # Clear all session data
+    session.clear()
+    # Force Flask to issue a new session ID
+    session.modified = True
     return redirect(url_for('landing'))
 
 if __name__ == '__main__':

@@ -1,5 +1,3 @@
-chat.html
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,7 +7,6 @@ chat.html
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
     />
-
     <style>
       :root {
         --main-orange: #f97316; /* bold orange */
@@ -26,25 +23,28 @@ chat.html
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0;
+        padding: 10px;
+        box-sizing: border-box;
       }
 
       /* --- Back Button --- */
       .back-button {
         position: absolute;
-        top: 20px;
-        left: 20px;
+        top: 15px;
+        left: 15px;
         text-decoration: none;
         color: white;
         background-color: var(--main-orange);
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 600;
         padding: 8px 15px;
         border: 2px solid var(--main-orange);
         border-radius: 25px;
         transition: all 0.3s ease;
         white-space: nowrap;
+        z-index: 100;
       }
       .back-button:hover {
         background-color: var(--main-orange);
@@ -53,16 +53,45 @@ chat.html
 
       /* --- Chat Container --- */
       #chat-container {
-        width: 90%;
-        height: 90%;
+        width: 100%;
         max-width: 1200px;
+        height: 90vh;
+        max-height: 900px;
         background-color: rgba(255, 255, 255, 0.95);
         border-radius: 20px;
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        padding: 20px;
+        padding: 15px;
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      /* --- Header --- */
+      .chat-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        flex-shrink: 0;
+      }
+
+      .chat-header img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #d46a00;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .chat-header h2 {
+        margin: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
       }
 
       /* --- Chat Box & Messages --- */
@@ -76,16 +105,17 @@ chat.html
         background-color: #fff7ed;
         border-radius: 15px;
         box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 15px;
       }
 
       .message {
         margin: 5px 0;
-        padding: 12px 18px;
-        border-radius: 20px;
+        padding: 10px 15px;
+        border-radius: 18px;
         max-width: 75%;
         word-wrap: break-word;
-        line-height: 1.5;
-        font-size: 0.95em;
+        line-height: 1.4;
+        font-size: 0.95rem;
       }
 
       .message.you {
@@ -108,111 +138,299 @@ chat.html
         font-weight: bold;
       }
 
-      /* --- Input Form --- */
-      form {
-        display: flex;
-        margin-top: 15px;
-        gap: 10px;
+      /* --- Block/Unblock Section --- */
+      .block-section {
+        margin: 10px 0;
+        text-align: center;
+        flex-shrink: 0;
       }
 
-      input[type="text"] {
+      .block-section button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .unblock-btn {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .block-btn {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .blocked-text {
+        color: #888;
+        font-size: 0.85rem;
+      }
+
+      /* --- Input Form --- */
+      .chat-form {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .chat-form input[type="text"] {
         flex-grow: 1;
-        padding: 12px 18px;
+        padding: 10px 15px;
         border: 2px solid var(--main-orange);
         border-radius: 25px;
-        font-size: 1em;
+        font-size: 0.95rem;
         outline: none;
         transition: all 0.3s ease;
       }
-      input[type="text"]:focus {
+
+      .chat-form input[type="text"]:focus {
         border-color: #ea580c;
         box-shadow: 0 0 8px rgba(249, 115, 22, 0.3);
       }
 
-      button[type="submit"] {
-        padding: 12px 25px;
+      .chat-form button[type="submit"] {
+        padding: 10px 20px;
         background-color: var(--main-orange);
         color: white;
         border: none;
         border-radius: 25px;
         cursor: pointer;
-        font-size: 1em;
+        font-size: 0.95rem;
         font-weight: 600;
+        white-space: nowrap;
       }
-      button[type="submit"]:hover {
+
+      .chat-form button[type="submit"]:hover {
         background-color: #ea580c;
       }
 
+      .chat-form input:disabled,
+      .chat-form button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      /* --- Scrollbar Styling --- */
+      #chat-box::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      #chat-box::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      #chat-box::-webkit-scrollbar-thumb {
+        background: #d46a00;
+        border-radius: 10px;
+      }
+
+      #chat-box::-webkit-scrollbar-thumb:hover {
+        background: var(--main-orange);
+      }
+
       /* --- Responsive Breakpoints --- */
+      /* Large screens */
+      @media (min-width: 1200px) {
+        #chat-container {
+          height: 85vh;
+          max-height: 800px;
+        }
+
+        .message {
+          font-size: 1rem;
+          max-width: 70%;
+        }
+      }
 
       /* Tablets */
       @media (max-width: 1024px) {
         #chat-container {
-          padding: 15px;
+          height: 85vh;
+          padding: 12px;
         }
+
+        .chat-header img {
+          width: 40px;
+          height: 40px;
+        }
+
+        .chat-header h2 {
+          font-size: 1.1rem;
+        }
+
         .message {
-          font-size: 0.9em;
-          padding: 10px 15px;
-        }
-        input[type="text"] {
-          font-size: 0.95em;
-        }
-        button[type="submit"] {
-          font-size: 0.95em;
-          padding: 10px 20px;
+          font-size: 0.9rem;
+          max-width: 80%;
         }
       }
 
-      /* Phones (portrait) */
+      /* Large phones and small tablets */
       @media (max-width: 768px) {
-        #chat-container {
-          width: 95%;
-          height: 95%;
-          border-radius: 15px;
-          padding: 12px;
+        body {
+          padding: 5px;
         }
+
         .back-button {
           top: 10px;
           left: 10px;
-          font-size: 0.85rem;
-          padding: 6px 10px;
+          font-size: 0.8rem;
+          padding: 6px 12px;
         }
+
+        #chat-container {
+          height: 95vh;
+          border-radius: 15px;
+          padding: 10px;
+        }
+
+        .chat-header img {
+          width: 35px;
+          height: 35px;
+        }
+
+        .chat-header h2 {
+          font-size: 1rem;
+        }
+
         .message {
-          font-size: 0.85em;
+          font-size: 0.85rem;
           max-width: 85%;
+          padding: 8px 12px;
         }
-        form {
-          gap: 6px;
+
+        .chat-form {
+          gap: 8px;
         }
-        input[type="text"] {
-          padding: 10px 14px;
-          font-size: 0.85em;
+
+        .chat-form input[type="text"] {
+          padding: 8px 12px;
+          font-size: 0.85rem;
         }
-        button[type="submit"] {
-          padding: 10px 16px;
-          font-size: 0.85em;
+
+        .chat-form button[type="submit"] {
+          padding: 8px 15px;
+          font-size: 0.85rem;
+        }
+
+        .block-section button {
+          font-size: 0.8rem;
+          padding: 5px 10px;
         }
       }
 
-      /* Small phones (≤480px) */
+      /* Medium phones */
       @media (max-width: 480px) {
+        body {
+          padding: 0;
+        }
+
+        .back-button {
+          top: 8px;
+          left: 8px;
+          font-size: 0.75rem;
+          padding: 5px 10px;
+        }
+
         #chat-container {
-          width: 100%;
-          height: 100%;
+          height: 100vh;
           border-radius: 0;
-          padding: 10px;
+          padding: 8px;
         }
+
+        .chat-header {
+          gap: 8px;
+          margin-bottom: 8px;
+          padding-bottom: 6px;
+        }
+
+        .chat-header img {
+          width: 30px;
+          height: 30px;
+        }
+
+        .chat-header h2 {
+          font-size: 0.9rem;
+        }
+
+        /* Increased chat box height */
+        #chat-box {
+          margin-bottom: 8px;
+          padding: 8px;
+        }
+
         .message {
-          font-size: 0.8em;
-          padding: 8px 12px;
+          font-size: 0.9rem; /* Increased from 0.8rem */
+          max-width: 90%;
+          padding: 10px 14px; /* Increased padding */
         }
-        input[type="text"] {
-          font-size: 0.8em;
-          padding: 8px 12px;
+
+        .chat-form {
+          gap: 8px;
         }
-        button[type="submit"] {
-          font-size: 0.8em;
-          padding: 8px 12px;
+
+        .chat-form input[type="text"] {
+          padding: 12px 15px; /* Increased padding */
+          font-size: 0.95rem; /* Increased from 0.8rem */
+        }
+
+        .chat-form button[type="submit"] {
+          padding: 12px 18px; /* Increased padding */
+          font-size: 0.95rem; /* Increased from 0.8rem */
+        }
+
+        .block-section {
+          margin: 6px 0;
+        }
+
+        .block-section button {
+          font-size: 0.85rem; /* Increased from 0.75rem */
+          padding: 6px 12px; /* Increased padding */
+        }
+
+        .blocked-text {
+          font-size: 0.9rem; /* Increased from 0.85rem */
+        }
+      }
+
+      /* Small phones */
+      @media (max-width: 360px) {
+        .chat-header h2 {
+          font-size: 0.85rem;
+        }
+
+        /* Further increased chat box height */
+        #chat-box {
+          margin-bottom: 6px;
+          padding: 6px;
+        }
+
+        .message {
+          font-size: 0.9rem; /* Increased from 0.75rem */
+          max-width: 95%;
+          padding: 12px 15px; /* Increased padding */
+        }
+
+        .chat-form input[type="text"] {
+          font-size: 0.95rem; /* Increased from 0.75rem */
+          padding: 14px 16px; /* Increased padding */
+        }
+
+        .chat-form button[type="submit"] {
+          font-size: 0.95rem; /* Increased from 0.75rem */
+          padding: 14px 16px; /* Increased padding */
+        }
+
+        .block-section button {
+          font-size: 0.85rem; /* Increased from 0.75rem */
+          padding: 8px 14px; /* Increased padding */
+        }
+
+        .blocked-text {
+          font-size: 0.9rem; /* Increased from 0.85rem */
         }
       }
     </style>
@@ -223,35 +441,17 @@ chat.html
 
     <div id="chat-container">
       <!-- Header -->
-      <div
-        style="
-          display: flex;
-          align-items: center;
-          gap: 15px;
-          margin-bottom: 20px;
-          border-bottom: 1px solid #eee;
-          padding-bottom: 10px;
-        "
-      >
+      <div class="chat-header">
         <img
           src="{{ receiver_profile_url }}"
           alt="{{ receiver_name }}'s profile"
-          style="
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #d46a00;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-          "
         />
         <h2
-          style="margin: 0; cursor: pointer; transition: all 0.3s ease"
           onclick="window.location.href='/profile/{{ receiver_id }}'"
           onmouseover="this.style.color='#ea580c'; this.style.textShadow='0 0 1px #ea580c, 0 0 1px #ea580c';"
           onmouseout="this.style.color=''; this.style.textShadow='';"
         >
-          {{ receiver_name }} 🧡
+          {{ receiver_name }}
         </h2>
       </div>
 
@@ -270,30 +470,17 @@ chat.html
       </div>
 
       <!-- Block / Unblock -->
-      <div style="margin: 10px 0; text-align: center">
+      <div class="block-section">
         {% if blocked_by_me %}
         <form
           action="{{ url_for('unblock_user', user_id=receiver_id) }}"
           method="POST"
           style="display: inline"
         >
-          <button
-            type="submit"
-            style="
-              padding: 6px 12px;
-              background-color: #28a745;
-              color: white;
-              border: none;
-              border-radius: 12px;
-              cursor: pointer;
-              font-size: 0.9em;
-            "
-          >
-            Unblock
-          </button>
+          <button type="submit" class="unblock-btn">Unblock</button>
         </form>
         {% elif blocked_by_them %}
-        <span style="color: #888; font-size: 0.9em">
+        <span class="blocked-text">
           This user has blocked you. You cannot send messages.
         </span>
         {% else %}
@@ -302,26 +489,13 @@ chat.html
           method="POST"
           style="display: inline"
         >
-          <button
-            type="submit"
-            style="
-              padding: 6px 12px;
-              background-color: #dc3545;
-              color: white;
-              border: none;
-              border-radius: 12px;
-              cursor: pointer;
-              font-size: 0.9em;
-            "
-          >
-            Block
-          </button>
+          <button type="submit" class="block-btn">Block</button>
         </form>
         {% endif %}
       </div>
 
       <!-- Input Form -->
-      <form id="chat-form" style="gap: 10px; width: 100%">
+      <form id="chat-form" class="chat-form">
         <input
           type="text"
           id="message-input"
@@ -347,7 +521,7 @@ chat.html
           endif
           %}
         >
-          Send 🧡
+          Send
         </button>
       </form>
     </div>
@@ -365,7 +539,7 @@ chat.html
       // Mark messages as read
       window.onload = function () {
         chatBox.scrollTop = chatBox.scrollHeight;
-        fetch(/read_messages/${receiverId}, { method: "POST" })
+        fetch(`/read_messages/${receiverId}`, { method: "POST" })
           .then((res) => res.json())
           .then((data) => console.log("Read update:", data))
           .catch((err) => console.error("Error marking read:", err));
@@ -374,7 +548,6 @@ chat.html
       // Send message
       const chatForm = document.getElementById("chat-form");
       const messageInput = document.getElementById("message-input");
-
       chatForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const message = messageInput.value.trim();
@@ -406,8 +579,8 @@ chat.html
             ) {
               const div = document.createElement("div");
               const who = msg.sender_id == senderId ? "You" : "Them";
-              div.className = message ${who.toLowerCase()};
-              div.innerHTML = <strong>${who}:</strong> ${msg.content};
+              div.className = `message ${who.toLowerCase()}`;
+              div.innerHTML = `<strong>${who}:</strong> ${msg.content}`;
               chatBox.appendChild(div);
               chatBox.scrollTop = chatBox.scrollHeight;
             }
