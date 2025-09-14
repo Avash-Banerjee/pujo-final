@@ -1,99 +1,102 @@
+chat.html
+
 <!DOCTYPE html>
 <html>
   <head>
     <title>Chat</title>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-      /* --- Overall Page & Font --- */
+      :root {
+        --main-orange: #f97316; /* bold orange */
+        --light-orange: #fed7aa;
+      }
+
+      /* --- Overall Page --- */
       body {
-        font-family: "Georgia", serif;
+        font-family: "Poppins", sans-serif;
         background: url("https://www.transparenttextures.com/patterns/hearts.png"),
-          linear-gradient(to right, #ff9a9e, #fecfef);
+          linear-gradient(to right, #ffd6b0, #fff3e0);
         background-attachment: fixed;
         color: #333;
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
-        min-height: 100vh;
+        align-items: center;
+        height: 100vh;
         margin: 0;
       }
 
-      h2 {
-        color: #d1416e;
-        font-size: 2.5em;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-        position: relative;
-      }
-
-      /* --- Back Button Style --- */
+      /* --- Back Button --- */
       .back-button {
         position: absolute;
         top: 20px;
         left: 20px;
         text-decoration: none;
-        color: #d1416e;
-        font-size: 1.2em;
-        font-weight: bold;
+        color: white;
+        background-color: var(--main-orange);
+        font-size: 1rem;
+        font-weight: 600;
         padding: 8px 15px;
-        border: 2px solid #d1416e;
+        border: 2px solid var(--main-orange);
         border-radius: 25px;
         transition: all 0.3s ease;
+        white-space: nowrap;
       }
-
       .back-button:hover {
-        background-color: #d1416e;
+        background-color: var(--main-orange);
         color: white;
       }
 
       /* --- Chat Container --- */
       #chat-container {
         width: 90%;
-        max-width: 800px;
+        height: 90%;
+        max-width: 1200px;
         background-color: rgba(255, 255, 255, 0.95);
         border-radius: 20px;
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         padding: 20px;
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
-        font-family: "Georgia", serif;
       }
 
       /* --- Chat Box & Messages --- */
       #chat-box {
         flex-grow: 1;
-        height: 400px;
         overflow-y: auto;
         padding: 10px;
         display: flex;
         flex-direction: column;
         gap: 10px;
-        background-color: #fdf5f8;
+        background-color: #fff7ed;
         border-radius: 15px;
         box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
       }
 
       .message {
-        margin: 10px 0;
+        margin: 5px 0;
         padding: 12px 18px;
         border-radius: 20px;
         max-width: 75%;
         word-wrap: break-word;
-        line-height: 1.4;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        line-height: 1.5;
+        font-size: 0.95em;
       }
 
       .message.you {
-        background-color: #ffb6c1;
+        background-color: var(--main-orange);
         align-self: flex-end;
-        color: #4b0082;
+        color: white;
         border-bottom-right-radius: 5px;
       }
 
       .message.them {
-        background-color: #e6e6fa;
+        background-color: var(--light-orange);
         align-self: flex-start;
         color: #333;
         border-bottom-left-radius: 5px;
@@ -108,51 +111,118 @@
       /* --- Input Form --- */
       form {
         display: flex;
-        width: 100%;
-        margin-top: 20px;
+        margin-top: 15px;
+        gap: 10px;
       }
 
       input[type="text"] {
         flex-grow: 1;
-        padding: 12px;
-        border: 2px solid #ff9a9e;
+        padding: 12px 18px;
+        border: 2px solid var(--main-orange);
         border-radius: 25px;
         font-size: 1em;
         outline: none;
         transition: all 0.3s ease;
       }
-
       input[type="text"]:focus {
-        border-color: #d1416e;
-        box-shadow: 0 0 8px rgba(209, 65, 110, 0.3);
+        border-color: #ea580c;
+        box-shadow: 0 0 8px rgba(249, 115, 22, 0.3);
       }
 
       button[type="submit"] {
         padding: 12px 25px;
-        margin-left: 10px;
-        background-color: #d1416e;
+        background-color: var(--main-orange);
         color: white;
         border: none;
         border-radius: 25px;
         cursor: pointer;
         font-size: 1em;
-        font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-weight: 600;
+      }
+      button[type="submit"]:hover {
+        background-color: #ea580c;
       }
 
-      button[type="submit"]:hover {
-        background-color: #b3395d;
-        transform: translateY(-2px);
+      /* --- Responsive Breakpoints --- */
+
+      /* Tablets */
+      @media (max-width: 1024px) {
+        #chat-container {
+          padding: 15px;
+        }
+        .message {
+          font-size: 0.9em;
+          padding: 10px 15px;
+        }
+        input[type="text"] {
+          font-size: 0.95em;
+        }
+        button[type="submit"] {
+          font-size: 0.95em;
+          padding: 10px 20px;
+        }
+      }
+
+      /* Phones (portrait) */
+      @media (max-width: 768px) {
+        #chat-container {
+          width: 95%;
+          height: 95%;
+          border-radius: 15px;
+          padding: 12px;
+        }
+        .back-button {
+          top: 10px;
+          left: 10px;
+          font-size: 0.85rem;
+          padding: 6px 10px;
+        }
+        .message {
+          font-size: 0.85em;
+          max-width: 85%;
+        }
+        form {
+          gap: 6px;
+        }
+        input[type="text"] {
+          padding: 10px 14px;
+          font-size: 0.85em;
+        }
+        button[type="submit"] {
+          padding: 10px 16px;
+          font-size: 0.85em;
+        }
+      }
+
+      /* Small phones (≤480px) */
+      @media (max-width: 480px) {
+        #chat-container {
+          width: 100%;
+          height: 100%;
+          border-radius: 0;
+          padding: 10px;
+        }
+        .message {
+          font-size: 0.8em;
+          padding: 8px 12px;
+        }
+        input[type="text"] {
+          font-size: 0.8em;
+          padding: 8px 12px;
+        }
+        button[type="submit"] {
+          font-size: 0.8em;
+          padding: 8px 12px;
+        }
       }
     </style>
   </head>
-
   <body>
     <!-- Back Button -->
     <a href="{{ back_url }}" class="back-button">← Back</a>
 
     <div id="chat-container">
-      <!-- Chat Header -->
+      <!-- Header -->
       <div
         style="
           display: flex;
@@ -171,17 +241,17 @@
             height: 55px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #d1416e;
+            border: 2px solid #d46a00;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
           "
         />
         <h2
           style="margin: 0; cursor: pointer; transition: all 0.3s ease"
           onclick="window.location.href='/profile/{{ receiver_id }}'"
-          onmouseover="this.style.color='#ec4899'; this.style.textShadow='0 0 1px #ec4899, 0 0 1px #ec4899';"
+          onmouseover="this.style.color='#ea580c'; this.style.textShadow='0 0 1px #ea580c, 0 0 1px #ea580c';"
           onmouseout="this.style.color=''; this.style.textShadow='';"
         >
-          {{ receiver_name }} 💕
+          {{ receiver_name }} 🧡
         </h2>
       </div>
 
@@ -277,7 +347,7 @@
           endif
           %}
         >
-          Send ❤️
+          Send 🧡
         </button>
       </form>
     </div>
@@ -295,7 +365,7 @@
       // Mark messages as read
       window.onload = function () {
         chatBox.scrollTop = chatBox.scrollHeight;
-        fetch(`/read_messages/${receiverId}`, { method: "POST" })
+        fetch(/read_messages/${receiverId}, { method: "POST" })
           .then((res) => res.json())
           .then((data) => console.log("Read update:", data))
           .catch((err) => console.error("Error marking read:", err));
@@ -336,8 +406,8 @@
             ) {
               const div = document.createElement("div");
               const who = msg.sender_id == senderId ? "You" : "Them";
-              div.className = `message ${who.toLowerCase()}`;
-              div.innerHTML = `<strong>${who}:</strong> ${msg.content}`;
+              div.className = message ${who.toLowerCase()};
+              div.innerHTML = <strong>${who}:</strong> ${msg.content};
               chatBox.appendChild(div);
               chatBox.scrollTop = chatBox.scrollHeight;
             }
