@@ -22,7 +22,7 @@
 
   <!-- Hero Section -->
   <section class="relative h-[80vh] flex flex-col justify-center items-center text-center text-white bg-cover bg-[center_top_30%]"
-           style="background-image: url('{{ url_for('static', filename='images/hero.png') }}');">
+          style="background-image: url('https://uccwrkpdkheliitelkag.supabase.co/storage/v1/object/public/profile_photos/hero.png');">
     <div class="absolute inset-0 bg-black/40"></div>
     <div class="relative max-w-xl px-4" data-aos="fade-up">
      <h2 class="text-4xl md:text-6xl font-bold mb-4" style="font-family: 'Great Vibes', cursive;">
@@ -48,14 +48,14 @@
       <!-- Card 1 -->
       <div class="absolute top-0 left-6 w-56 sm:w-64 min-h-[280px] bg-white rounded-2xl shadow-lg border border-red-100 rotate-[-6deg] hover:rotate-[-3deg] transition-transform flex flex-col items-center justify-center text-center p-5" 
            data-aos="fade-right">
-        <img src="{{ url_for('static', filename='images/woman.png') }}" alt="Person 1" class="w-24 h-24 rounded-full object-cover border-4 border-red-200 mb-3">
+        <img src="https://uccwrkpdkheliitelkag.supabase.co/storage/v1/object/public/profile_photos/woman.png" alt="Person 1" class="w-24 h-24 rounded-full object-cover border-4 border-red-200 mb-3">
         <h3 class="text-lg font-semibold">Ananya, 23</h3>
         <p class="text-gray-600 text-sm">Pandal-hopping, street food</p>
       </div>
       <!-- Card 2 -->
       <div class="absolute bottom-0 right-6 w-56 sm:w-64 min-h-[280px] bg-white rounded-2xl shadow-lg border border-red-100 rotate-[6deg] hover:rotate-[3deg] transition-transform flex flex-col items-center justify-center text-center p-5"
            data-aos="fade-left" data-aos-delay="200">
-        <img src="{{ url_for('static', filename='images/man.png') }}" alt="Person 2" class="w-24 h-24 rounded-full object-cover border-4 border-red-200 mb-3">
+        <img src="https://uccwrkpdkheliitelkag.supabase.co/storage/v1/object/public/profile_photos/man.png" alt="Person 2" class="w-24 h-24 rounded-full object-cover border-4 border-red-200 mb-3">
         <h3 class="text-lg font-semibold">Rohit, 25</h3>
         <p class="text-gray-600 text-sm">Music, fashion, pujo selfies</p>
       </div>
@@ -198,4 +198,5 @@
   </style>
 
 </div>
+
 {% endblock %}
