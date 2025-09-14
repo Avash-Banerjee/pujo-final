@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+      /* --- Overall Page & Font --- */
+      body {
+        font-family: "Georgia", serif;
+        background: url("https://www.transparenttextures.com/patterns/hearts.png"),
+          linear-gradient(to right, #ff9a9e, #fecfef);
+        background-attachment: fixed;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      h2 {
+        color: #d1416e;
+        font-size: 2.5em;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        position: relative;
+      }
+
+      /* --- Back Button Style --- */
+      .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        text-decoration: none;
+        color: #d1416e;
+        font-size: 1.2em;
+        font-weight: bold;
+        padding: 8px 15px;
+        border: 2px solid #d1416e;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+      }
+
+      .back-button:hover {
+        background-color: #d1416e;
+        color: white;
+      }
+
+      /* --- Chat Container --- */
+      #chat-container {
+        width: 90%;
+        max-width: 800px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        font-family: "Georgia", serif;
+      }
+
+      /* --- Chat Box & Messages --- */
+      #chat-box {
+        flex-grow: 1;
+        height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #fdf5f8;
+        border-radius: 15px;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .message {
+        margin: 10px 0;
+        padding: 12px 18px;
+        border-radius: 20px;
+        max-width: 75%;
+        word-wrap: break-word;
+        line-height: 1.4;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .message.you {
+        background-color: #ffb6c1;
+        align-self: flex-end;
+        color: #4b0082;
+        border-bottom-right-radius: 5px;
+      }
+
+      .message.them {
+        background-color: #e6e6fa;
+        align-self: flex-start;
+        color: #333;
+        border-bottom-left-radius: 5px;
+      }
+
+      .message strong {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+      }
+
+      /* --- Input Form --- */
+      form {
+        display: flex;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      input[type="text"] {
+        flex-grow: 1;
+        padding: 12px;
+        border: 2px solid #ff9a9e;
+        border-radius: 25px;
+        font-size: 1em;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+
+      input[type="text"]:focus {
+        border-color: #d1416e;
+        box-shadow: 0 0 8px rgba(209, 65, 110, 0.3);
+      }
+
+      button[type="submit"] {
+        padding: 12px 25px;
+        margin-left: 10px;
+        background-color: #d1416e;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #b3395d;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Back Button -->
+    <a href="{{ back_url }}" class="back-button">← Back</a>
+
+    <div id="chat-container">
+      <!-- Chat Header -->
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-bottom: 20px;
+          border-bottom: 1px solid #eee;
+          padding-bottom: 10px;
+        "
+      >
+        <img
+          src="{{ receiver_profile_url }}"
+          alt="{{ receiver_name }}'s profile"
+          style="
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #d1416e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          "
+        />
+        <h2
+          style="margin: 0; cursor: pointer; transition: all 0.3s ease"
+          onclick="window.location.href='/profile/{{ receiver_id }}'"
+          onmouseover="this.style.color='#ec4899'; this.style.textShadow='0 0 1px #ec4899, 0 0 1px #ec4899';"
+          onmouseout="this.style.color=''; this.style.textShadow='';"
+        >
+          {{ receiver_name }} 💕
+        </h2>
+      </div>
+
+      <!-- Chat Messages -->
+      <div id="chat-box">
+        {% for msg in messages %}
+        <div
+          class="message {{ 'you' if msg['sender_id'] == sender_id else 'them' }}"
+        >
+          <strong
+            >{{ 'You' if msg['sender_id'] == sender_id else 'Them' }}:</strong
+          >
+          {{ msg['content'] }}
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Block / Unblock -->
+      <div style="margin: 10px 0; text-align: center">
+        {% if blocked_by_me %}
+        <form
+          action="{{ url_for('unblock_user', user_id=receiver_id) }}"
+          method="POST"
+          style="display: inline"
+        >
+          <button
+            type="submit"
+            style="
+              padding: 6px 12px;
+              background-color: #28a745;
+              color: white;
+              border: none;
+              border-radius: 12px;
+              cursor: pointer;
+              font-size: 0.9em;
+            "
+          >
+            Unblock
+          </button>
+        </form>
+        {% elif blocked_by_them %}
+        <span style="color: #888; font-size: 0.9em">
+          This user has blocked you. You cannot send messages.
+        </span>
+        {% else %}
+        <form
+          action="{{ url_for('block_user', user_id=receiver_id) }}"
+          method="POST"
+          style="display: inline"
+        >
+          <button
+            type="submit"
+            style="
+              padding: 6px 12px;
+              background-color: #dc3545;
+              color: white;
+              border: none;
+              border-radius: 12px;
+              cursor: pointer;
+              font-size: 0.9em;
+            "
+          >
+            Block
+          </button>
+        </form>
+        {% endif %}
+      </div>
+
+      <!-- Input Form -->
+      <form id="chat-form" style="gap: 10px; width: 100%">
+        <input
+          type="text"
+          id="message-input"
+          name="message"
+          placeholder="{% if blocked_by_me or blocked_by_them %}You cannot send messages while blocked{% else %}Type a message...{% endif %}"
+          {%
+          if
+          blocked_by_me
+          or
+          blocked_by_them
+          %}disabled{%
+          endif
+          %}
+        />
+        <button
+          type="submit"
+          {%
+          if
+          blocked_by_me
+          or
+          blocked_by_them
+          %}disabled{%
+          endif
+          %}
+        >
+          Send ❤️
+        </button>
+      </form>
+    </div>
+
+    <script>
+      const { createClient } = supabase;
+      const SUPABASE_URL = "{{ SUPABASE_URL }}";
+      const SUPABASE_KEY = "{{ SUPABASE_KEY }}";
+      const senderId = "{{ sender_id }}";
+      const receiverId = "{{ receiver_id }}";
+      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+      const chatBox = document.getElementById("chat-box");
+      const channelName = [senderId, receiverId].sort().join("-");
+
+      // Mark messages as read
+      window.onload = function () {
+        chatBox.scrollTop = chatBox.scrollHeight;
+        fetch(`/read_messages/${receiverId}`, { method: "POST" })
+          .then((res) => res.json())
+          .then((data) => console.log("Read update:", data))
+          .catch((err) => console.error("Error marking read:", err));
+      };
+
+      // Send message
+      const chatForm = document.getElementById("chat-form");
+      const messageInput = document.getElementById("message-input");
+
+      chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const message = messageInput.value.trim();
+        if (message) {
+          const { error } = await supabaseClient.from("messages").insert([
+            {
+              sender_id: senderId,
+              receiver_id: receiverId,
+              content: message,
+              is_read: false,
+            },
+          ]);
+          if (error) console.error("Send error:", error);
+          messageInput.value = "";
+        }
+      });
+
+      // Realtime subscription
+      supabaseClient
+        .channel("chat-" + channelName)
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "messages" },
+          (payload) => {
+            const msg = payload.new;
+            if (
+              (msg.sender_id == senderId && msg.receiver_id == receiverId) ||
+              (msg.sender_id == receiverId && msg.receiver_id == senderId)
+            ) {
+              const div = document.createElement("div");
+              const who = msg.sender_id == senderId ? "You" : "Them";
+              div.className = `message ${who.toLowerCase()}`;
+              div.innerHTML = `<strong>${who}:</strong> ${msg.content}`;
+              chatBox.appendChild(div);
+              chatBox.scrollTop = chatBox.scrollHeight;
+            }
+          }
+        )
+        .subscribe();
+    </script>
+  </body>
+</html>

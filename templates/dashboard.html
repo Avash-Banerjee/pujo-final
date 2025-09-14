@@ -1,0 +1,443 @@
+{% extends 'base.html' %} {% block content %}
+<div class="min-h-screen">
+  <header class="bg-white/90 backdrop-blur-sm shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="heart" class="h-8 w-8 text-pink-500"></i>
+          <span
+            class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
+          >
+            LoveConnect
+          </span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a
+            href="{{ url_for('chat_list') }}"
+            class="p-2 text-gray-600 hover:text-pink-600 transition-colors relative"
+          >
+            <i data-lucide="message-circle" class="h-6 w-6"></i>
+            {% if unread_chat_count > 0 %}
+            <span
+              class="absolute top-1 right-1 h-5 w-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold"
+            >
+              {{ unread_chat_count }}
+            </span>
+            {% endif %}
+          </a>
+          <a
+            href="{{ url_for('edit_profile') }}"
+            class="p-2 text-gray-600 hover:text-pink-600 transition-colors"
+          >
+            <i data-lucide="settings" class="h-6 w-6"></i>
+          </a>
+          <a
+            href="{{ url_for('logout') }}"
+            class="p-2 text-gray-600 hover:text-pink-600 transition-colors"
+          >
+            <i data-lucide="log-out" class="h-6 w-6"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="mb-4">
+      {% for category, message in messages %}
+      <div
+        class="p-4 rounded-md {{ 'bg-green-100 text-green-800' if category == 'success' else 'bg-red-100 text-red-800' }}"
+      >
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-1">
+        <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg p-6">
+          <div class="text-center">
+            <img
+              src="{{ profile.photos[0] if profile.photos else 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop&crop=face' }}"
+              loading="lazy"
+              alt="Profile"
+              class="w-32 h-32 rounded-full object-cover mx-auto mb-4 cursor-pointer ring-4 ring-pink-200"
+              onclick="openLightbox('{{ profile.photos[0] if profile.photos else 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop&crop=face' }}')"
+            />
+            <h2 class="text-2xl font-bold text-gray-900">{{ profile.name }}</h2>
+            <p class="text-gray-600">{{ profile.age }} years old</p>
+            <p class="text-gray-600">{{ profile.location }}</p>
+          </div>
+
+          <div class="mt-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">About Me</h3>
+            <p
+              class="text-gray-600 text-sm leading-relaxed break-words overflow-hidden line-clamp-4"
+            >
+              {{ profile.bio }}
+            </p>
+          </div>
+
+          <div class="mt-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Interests</h3>
+            <div class="flex flex-wrap gap-2">
+              {% for interest in profile.interests %}
+              <span
+                class="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm"
+              >
+                {{ interest }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+          <!-- ✅ NEW SECTION: Step 5 Preferences -->
+          <div class="mt-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">
+              My Preferences
+            </h3>
+            <ul class="space-y-2 text-sm text-gray-700">
+              {% if profile.aesthetics %}
+              <li>
+                <span class="font-medium text-gray-900">Aesthetics:</span>
+                {{ profile.aesthetics }}
+              </li>
+              {% endif %} {% if profile.relationship %}
+              <li>
+                <span class="font-medium text-gray-900">Relationship:</span>
+                {{ profile.relationship }}
+              </li>
+              {% endif %} {% if profile.fun_option %}
+              <li>
+                <span class="font-medium text-gray-900">Fun Option:</span>
+                {{ profile.fun_option }}
+              </li>
+              {% endif %} {% if profile.hangout %}
+              <li>
+                <span class="font-medium text-gray-900">Hangout:</span>
+                {{ profile.hangout }}
+              </li>
+              {% endif %} {% if profile.looking_for %}
+              <li>
+                <span class="font-medium text-gray-900">Looking For:</span>
+                {{ profile.looking_for }}
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+          <!-- ✅ END NEW SECTION -->
+
+          <button
+            id="add-photos-btn"
+            class="w-full mt-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transition-all"
+          >
+            Add Photos
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div class="space-y-6">
+          <div class="grid grid-cols-3 gap-4">
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+            >
+              <i
+                data-lucide="users"
+                class="h-8 w-8 text-pink-500 mx-auto mb-2"
+              ></i>
+              <div class="text-2xl font-bold text-gray-900">
+                {{ match_count }}
+              </div>
+              <div class="text-gray-600 text-sm">Matches</div>
+            </div>
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+            >
+              <i
+                data-lucide="message-circle"
+                class="h-8 w-8 text-purple-500 mx-auto mb-2"
+              ></i>
+              <div class="text-2xl font-bold text-gray-900">
+                {{messages_count}}
+              </div>
+              <div class="text-gray-600 text-sm">Messages</div>
+            </div>
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+            >
+              <i
+                data-lucide="star"
+                class="h-8 w-8 text-yellow-500 mx-auto mb-2"
+              ></i>
+              <div class="text-2xl font-bold text-gray-900">
+                {{ likes_count }}
+              </div>
+              <div class="text-gray-600 text-sm">Likes</div>
+            </div>
+          </div>
+
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-8">
+            <div class="text-center">
+              <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                Welcome to LoveConnect, {{ profile.name }}! 🎉
+              </h1>
+              <p class="text-gray-600 mb-6">
+                Your profile is complete and you're ready to start connecting
+                with amazing people in your area.
+              </p>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <a
+                  href="{{ url_for('matching') }}"
+                  class="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-lg"
+                >
+                  Start Matching
+                </a>
+                <a
+                  href="{{ url_for('see_other') }}"
+                  class="px-6 py-3 border-2 border-pink-500 text-pink-600 rounded-xl font-semibold hover:bg-pink-50 transition-colors"
+                >
+                  Browse Profiles
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="mt-8 bg-white p-6 rounded-2xl shadow-lg">
+            <h3 class="text-2xl font-bold text-slate-800 mb-4">
+              Recent Activity
+            </h3>
+            <ul id="recent-activity-list" class="space-y-4">
+              {% for activity in recent_activity %}
+              <li
+                class="flex items-center space-x-4 bg-slate-50 p-4 rounded-xl transition duration-200 hover:bg-slate-100"
+              >
+                <div
+                  class="w-10 h-10 flex items-center justify-center rounded-full text-white text-lg flex-shrink-0 {% if activity.type == 'message' %} bg-blue-100 text-blue-500 {% elif activity.type == 'like' %} bg-pink-100 text-pink-500 {% elif activity.type == 'match' %} bg-green-100 text-green-500 {% endif %}"
+                >
+                  {% if activity.type == "message" %}
+                  <i data-lucide="message-circle" class="h-5 w-5"></i>
+                  {% elif activity.type == "like" %}
+                  <i data-lucide="heart" class="h-5 w-5"></i>
+                  {% elif activity.type == "match" %}
+                  <i data-lucide="users" class="h-5 w-5"></i>
+                  {% endif %}
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <a
+                    href="{{ activity.link }}"
+                    class="text-slate-700 font-medium block truncate hover:text-pink-600"
+                  >
+                    {{ activity.message }}
+                  </a>
+                  <span class="text-xs text-slate-500 block mt-0.5">
+                    {{ activity.timestamp | humanize_datetime }}
+                  </span>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+            {% if recent_activity|length > 3 %}
+            <button
+              id="toggle-activity-btn"
+              class="mt-4 w-full py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transition-all"
+            >
+              Show More
+            </button>
+            {% endif %}
+          </div>
+
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Your Photos</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {% for photo in profile.photos %}
+              <div class="relative group aspect-w-1 aspect-h-1">
+                <img
+                  src="{{ photo }}"
+                  alt="User photo"
+                  class="w-full h-full object-cover rounded-xl shadow-md cursor-pointer"
+                  onclick="openLightbox('{{ photo }}')"
+                />
+
+                <form
+                  method="POST"
+                  action="{{ url_for('delete_photo') }}"
+                  class="absolute top-2 right-2 hidden group-hover:block"
+                >
+                  <input type="hidden" name="photo_url" value="{{ photo }}" />
+                  <button
+                    type="submit"
+                    class="bg-red-500 text-white rounded-full p-2 shadow-md hover:bg-red-600 transition"
+                  >
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                </form>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  id="add-photos-modal"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
+>
+  <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
+    <h2 class="text-2xl font-bold text-gray-900 text-center mb-6">
+      Upload More Photos
+    </h2>
+    <form
+      id="add-photos-form"
+      method="POST"
+      action="{{ url_for('add_photos') }}"
+      enctype="multipart/form-data"
+    >
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="modal-photos-grid">
+        <label
+          for="modal-photos-input"
+          id="modal-upload-label"
+          class="cursor-pointer h-32 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center hover:border-pink-500 transition-colors"
+        >
+          <i data-lucide="upload" class="h-8 w-8 text-gray-400 mb-2"></i>
+          <span class="text-gray-500 text-sm">Click to upload</span>
+        </label>
+      </div>
+      <input
+        type="file"
+        name="photos"
+        id="modal-photos-input"
+        accept="image/*"
+        multiple
+        class="hidden"
+      />
+      <div class="flex justify-end mt-6">
+        <button
+          type="button"
+          id="cancel-upload-btn"
+          class="px-6 py-2 text-gray-600 hover:text-pink-600 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700"
+        >
+          Upload
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  id="lightbox-modal"
+  class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50"
+>
+  <span
+    id="close-lightbox"
+    class="absolute top-4 right-4 text-white text-3xl cursor-pointer"
+    >&times;</span
+  >
+  <img id="lightbox-image" src="" class="max-w-full max-h-full" />
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const activityList = document.getElementById("recent-activity-list");
+    const toggleBtn = document.getElementById("toggle-activity-btn");
+
+    if (activityList && toggleBtn) {
+      activityList.classList.add("max-h-60", "overflow-hidden");
+
+      toggleBtn.addEventListener("click", function () {
+        const isExpanded = activityList.classList.toggle("max-h-60");
+        activityList.classList.toggle("overflow-hidden");
+
+        toggleBtn.textContent = isExpanded ? "Show More" : "Show Less";
+      });
+    }
+
+    const addPhotosBtn = document.getElementById("add-photos-btn");
+    const addPhotosModal = document.getElementById("add-photos-modal");
+    const cancelUploadBtn = document.getElementById("cancel-upload-btn");
+    const modalPhotosInput = document.getElementById("modal-photos-input");
+    const modalPhotosGrid = document.getElementById("modal-photos-grid");
+    const modalUploadLabel = document.getElementById("modal-upload-label");
+    const addPhotosForm = document.getElementById("add-photos-form");
+    const uploadBtn = addPhotosForm.querySelector("button[type='submit']");
+
+    // Open modal & reset previews
+    addPhotosBtn.addEventListener("click", () => {
+      addPhotosModal.classList.remove("hidden");
+      modalPhotosGrid
+        .querySelectorAll(".photo-preview")
+        .forEach((el) => el.remove());
+      modalPhotosInput.value = "";
+      uploadBtn.disabled = false;
+      uploadBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    });
+
+    // Cancel modal
+    cancelUploadBtn.addEventListener("click", () => {
+      addPhotosModal.classList.add("hidden");
+    });
+
+    // Handle photo previews
+    modalPhotosInput.addEventListener("change", () => {
+      modalPhotosGrid
+        .querySelectorAll(".photo-preview")
+        .forEach((el) => el.remove());
+
+      const files = modalPhotosInput.files;
+
+      if (files.length > 5) {
+        alert("You can only upload a maximum of 5 photos at a time.");
+        modalPhotosInput.value = "";
+        return;
+      }
+
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const div = document.createElement("div");
+          div.className = "relative photo-preview";
+          div.innerHTML = `<img src="${e.target.result}" class="w-full h-32 object-cover rounded-xl">`;
+          modalPhotosGrid.insertBefore(div, modalUploadLabel);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Disable upload button after click to prevent multiple submissions
+    addPhotosForm.addEventListener("submit", function () {
+      if (!modalPhotosInput.files.length) {
+        alert("Please select at least one photo.");
+        return false; // Prevent submission
+      }
+      uploadBtn.disabled = true;
+      uploadBtn.classList.add("opacity-50", "cursor-not-allowed");
+    });
+
+    // Lightbox
+    const lightboxModal = document.getElementById("lightbox-modal");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const closeLightbox = document.getElementById("close-lightbox");
+
+    window.openLightbox = function (src) {
+      lightboxImage.src = src;
+      lightboxModal.classList.remove("hidden");
+    };
+
+    closeLightbox.addEventListener("click", () => {
+      lightboxModal.classList.add("hidden");
+    });
+  });
+</script>
+
+{% endblock %}

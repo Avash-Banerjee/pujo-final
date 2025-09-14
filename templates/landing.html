@@ -1,0 +1,204 @@
+{% extends 'base.html' %} {% block content %}
+<div class="min-h-screen">
+  <!-- Header -->
+  <header class="px-4 py-6 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i data-lucide="heart" class="h-8 w-8 text-pink-500"></i>
+        <span
+          class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
+        >
+          LoveConnect
+        </span>
+      </div>
+      <div class="flex space-x-4">
+        <a
+          href="{{ url_for('login') }}"
+          class="px-4 py-2 text-gray-700 hover:text-pink-600 font-medium transition-colors"
+        >
+          Sign In
+        </a>
+        <a
+          href="{{ url_for('signup') }}"
+          class="px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-medium hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-lg"
+        >
+          Get Started
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="px-4 py-20 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto text-center">
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">
+        Find Your
+        <span
+          class="block bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
+        >
+          Perfect Match
+        </span>
+      </h1>
+      <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+        Connect with like-minded people in your area. Build meaningful
+        relationships through our smart matching algorithm and authentic
+        profiles.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="{{ url_for('signup') }}"
+          class="px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full text-lg font-semibold hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-xl"
+        >
+          Start Dating Today
+        </a>
+        <a
+          href="{{ url_for('login') }}"
+          class="px-8 py-4 border-2 border-pink-500 text-pink-600 rounded-full text-lg font-semibold hover:bg-pink-50 transition-colors"
+        >
+          Already a Member?
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="px-4 py-20 sm:px-6 lg:px-8 bg-white/50 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">
+        Why Choose LoveConnect?
+      </h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i data-lucide="zap" class="h-8 w-8 text-white"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">
+            Smart Matching
+          </h3>
+          <p class="text-gray-600">
+            Advanced AI algorithm that learns your preferences and suggests the
+            most compatible matches.
+          </p>
+        </div>
+
+        <div
+          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i data-lucide="shield" class="h-8 w-8 text-white"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">
+            Safe & Secure
+          </h3>
+          <p class="text-gray-600">
+            Verified profiles, photo verification, and 24/7 moderation to ensure
+            a safe dating environment.
+          </p>
+        </div>
+
+        <div
+          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i data-lucide="map-pin" class="h-8 w-8 text-white"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">
+            Local Connections
+          </h3>
+          <p class="text-gray-600">
+            Find matches in your area with customizable distance preferences for
+            convenient meetups.
+          </p>
+        </div>
+
+        <div
+          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i data-lucide="message-circle" class="h-8 w-8 text-white"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">
+            Rich Conversations
+          </h3>
+          <p class="text-gray-600">
+            Engaging chat features with photo sharing, voice messages, and video
+            calls.
+          </p>
+        </div>
+
+        <div
+          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i data-lucide="users" class="h-8 w-8 text-white"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">
+            Active Community
+          </h3>
+          <p class="text-gray-600">
+            Join millions of singles looking for meaningful connections and
+            lasting relationships.
+          </p>
+        </div>
+
+        <div
+          class="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i data-lucide="heart" class="h-8 w-8 text-white"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">
+            Success Stories
+          </h3>
+          <p class="text-gray-600">
+            Thousands of couples have found love through our platform. You could
+            be next!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="px-4 py-20 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl font-bold text-gray-900 mb-6">Ready to Find Love?</h2>
+      <p class="text-xl text-gray-600 mb-8">
+        Join thousands of singles who have found their perfect match on
+        LoveConnect
+      </p>
+      <a
+        href="{{ url_for('signup') }}"
+        class="px-12 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full text-xl font-semibold hover:from-pink-600 hover:to-purple-700 transform hover:scale-105 transition-all shadow-xl"
+      >
+        Join LoveConnect Now
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-4 py-8 sm:px-6 lg:px-8 bg-gray-900">
+    <div class="max-w-7xl mx-auto text-center">
+      <div class="flex items-center justify-center space-x-2 mb-4">
+        <i data-lucide="heart" class="h-6 w-6 text-pink-500"></i>
+        <span class="text-xl font-bold text-white">LoveConnect</span>
+      </div>
+      <p class="text-gray-400">© 2025 LoveConnect. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+{% endblock %}

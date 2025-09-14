@@ -1,0 +1,74 @@
+{% extends "base.html" %} {% block content %}
+<div class="max-w-2xl mx-auto p-6">
+  <div class="mb-4">
+    <a
+      href="{{ url_for('dashboard') }}"
+      class="flex items-center text-gray-600 hover:text-pink-600 transition-colors"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-chevron-left w-5 h-5 mr-1"
+      >
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      Back to Dashboard
+    </a>
+  </div>
+
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Your Chats</h2>
+
+  <div class="space-y-4">
+    {% if users %} {% for user in users %}
+    <a
+      href="{{ url_for('chat', receiver_id=user.id) }}"
+      class="block bg-white dark:bg-gray-900 rounded-2xl shadow hover:shadow-lg p-4 transition cursor-pointer"
+    >
+      <div class="flex items-center space-x-4">
+        <div class="relative">
+          <img
+            src="{{ user.photos[0] }}"
+            alt="Profile"
+            class="h-16 w-16 rounded-full object-cover border-2 border-pink-500"
+          />
+          {% set unread = unread_counts.get(user.id, 0) %} {% if unread > 0 %}
+          <span
+            class="absolute top-0 right-0 h-5 w-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold"
+          >
+            {{ unread }}
+          </span>
+          {% endif %}
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            {{ user.name }}
+          </h3>
+
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            {{ user.age }} years old
+          </p>
+          <p class="text-sm text-gray-400 italic">
+            Last message: "{{ user.last_message }}"
+          </p>
+        </div>
+      </div>
+    </a>
+    {% endfor %} {% else %}
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow p-8 text-center">
+      <p class="text-gray-500 dark:text-gray-400">
+        You haven't started any chats yet. Go to the dashboard and find new
+        people!
+      </p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends 'base.html' %} {% block content %}
+<div class="min-h-screen">
+  <header class="bg-white/90 backdrop-blur-sm shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="heart" class="h-8 w-8 text-pink-500"></i>
+          <span
+            class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
+          >
+            LoveConnect
+          </span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a
+            href="{{ url_for('dashboard') }}"
+            class="p-2 text-gray-600 hover:text-pink-600 transition-colors"
+          >
+            <i data-lucide="arrow-left" class="h-6 w-6"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-1">
+        <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg p-6">
+          <div class="text-center">
+            <img
+              src="{{ profile.photos[0] if profile.photos else 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop&crop=face' }}"
+              alt="Profile"
+              class="w-32 h-32 rounded-full object-cover mx-auto mb-4 ring-4 ring-pink-200"
+            />
+            <h2 class="text-2xl font-bold text-gray-900">{{ profile.name }}</h2>
+            <p class="text-gray-600">{{ profile.age }} years old</p>
+            <p class="text-gray-600">{{ profile.location }}</p>
+          </div>
+
+          <div class="mt-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">About Me</h3>
+            <p
+              class="text-gray-600 text-sm leading-relaxed break-words overflow-hidden line-clamp-4"
+            >
+              {{ profile.bio }}
+            </p>
+          </div>
+
+          <div class="mt-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Interests</h3>
+            <div class="flex flex-wrap gap-2">
+              {% for interest in profile.interests %}
+              <span
+                class="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm"
+              >
+                {{ interest }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+          <h1>ygiuhouhuhoiuhu</h1>
+          <div class="mt-6">
+            <a
+              href="{{ url_for('chat', receiver_id=profile['id']) }}"
+              class="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transition-all text-center block"
+            >
+              💬 Chat with {{ profile['name'] }}
+            </a>
+          </div>
+          <div class="mt-4">
+            <p>Likes: <span id="like-count">{{ likes_count }}</span></p>
+
+            {% if session.user_id and session.user_id != profile.id %}
+            <button
+              id="like-btn"
+              class="w-full py-3 bg-pink-100 text-pink-800 rounded-xl font-semibold hover:bg-pink-200 transition-all text-center block"
+            >
+              {% if already_liked %} 💔 Unlike {% else %} ❤️ Like {% endif %}
+            </button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div class="space-y-6">
+          <div class="grid grid-cols-3 gap-4">
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+            >
+              <i
+                data-lucide="users"
+                class="h-8 w-8 text-pink-500 mx-auto mb-2"
+              ></i>
+              <div class="text-2xl font-bold text-gray-900">
+                {{match_count}}
+              </div>
+              <div class="text-gray-600 text-sm">Matches</div>
+            </div>
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+            >
+              <i
+                data-lucide="message-circle"
+                class="h-8 w-8 text-purple-500 mx-auto mb-2"
+              ></i>
+              <div class="text-2xl font-bold text-gray-900">
+                {{messages_count}}
+              </div>
+              <div class="text-gray-600 text-sm">Messages</div>
+            </div>
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 text-center"
+            >
+              <i
+                data-lucide="star"
+                class="h-8 w-8 text-yellow-500 mx-auto mb-2"
+              ></i>
+              <div class="text-2xl font-bold text-gray-900">
+                {{ likes_count }}
+              </div>
+              <div class="text-gray-600 text-sm">Likes</div>
+            </div>
+          </div>
+
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">
+              {{ profile.name }}'s Photos
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {% for photo in profile.photos %}
+              <div class="relative aspect-w-1 aspect-h-1">
+                <img
+                  src="{{ photo }}"
+                  alt="User photo"
+                  class="w-full h-full object-cover rounded-xl shadow-md cursor-pointer"
+                  onclick="openLightbox('{{ photo }}')"
+                />
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  id="lightbox-modal"
+  class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50"
+>
+  <span
+    id="close-lightbox"
+    class="absolute top-4 right-4 text-white text-3xl cursor-pointer"
+    >&times;</span
+  >
+  <img id="lightbox-image" src="" class="max-w-full max-h-full" />
+</div>
+
+<script>
+  const likeBtn = document.getElementById("like-btn");
+  likeBtn?.addEventListener("click", async () => {
+    try {
+      const res = await fetch("{{ url_for('like', liked_id=profile.id) }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        const countEl = document.getElementById("like-count");
+        let count = parseInt(countEl.innerText);
+
+        if (data.unliked) {
+          likeBtn.innerHTML = "❤️ Like";
+          countEl.innerText = data.likes_count;
+        } else {
+          likeBtn.innerHTML = "💔 Unlike";
+          countEl.innerText = data.likes_count;
+
+          if (data.match) {
+            // Show a simple alert for match
+            alert("🎉 It's a match!");
+          }
+        }
+      } else {
+        alert(data.error || "Something went wrong.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to like the profile.");
+    }
+  });
+
+  // Lightbox functionality
+  function openLightbox(url) {
+    const modal = document.getElementById("lightbox-modal");
+    const img = document.getElementById("lightbox-image");
+    img.src = url;
+    modal.classList.remove("hidden");
+  }
+
+  document.getElementById("close-lightbox").addEventListener("click", () => {
+    document.getElementById("lightbox-modal").classList.add("hidden");
+  });
+</script>
+
+{% endblock %}
