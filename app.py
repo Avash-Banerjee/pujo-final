@@ -43,10 +43,7 @@ def get_unread_chat_count(user_id):
     return len(unique_senders)
 
 def get_unread_count_per_chat(user_id):
-    """
-    Counts unread messages for a user, grouped by sender.
-    Returns a dictionary like { 'sender_id': count, ... }
-    """
+   
     res = supabase.table("messages").select("sender_id").eq("receiver_id", user_id).eq("is_read", False).execute()
     unread_counts = {}
     for message in res.data:
@@ -229,7 +226,7 @@ def profile_setup():
     if request.method == 'POST':
         user_id = session['user_id']
 
-        # --- Step 2: DOB + Age ---
+        
         dob_str = request.form.get("dateOfBirth")
         age = 0
         if dob_str:
@@ -239,7 +236,7 @@ def profile_setup():
             except ValueError:
                 pass
 
-        # --- Step 4: Photo Uploads ---
+        # Photo Uploads
         uploaded_photos = request.files.getlist("photos")
         photo_urls = []
         if uploaded_photos:
@@ -264,20 +261,20 @@ def profile_setup():
                     # Remove temp file
                     os.remove(temp_path)
 
-        # Default photo if none uploaded
+        # Default 
         if not photo_urls:
             photo_urls = [
                 "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop&crop=face"
             ]
 
-        # --- Step 5: Personal Preferences ---
+        # Personal Preferences
         aesthetics = request.form.get("aesthetics_custom") or request.form.get("aesthetics")
         relationship = request.form.get("relationship_custom") or request.form.get("relationship")
         fun_option = request.form.get("fun_option_custom") or request.form.get("fun_option")
         hangout = request.form.get("hangout_custom") or request.form.get("hangout")
         looking_for = request.form.get("looking_for")
 
-        # --- Save Profile ---
+        #  Save 
         supabase.table("profiles").upsert({
             "id": user_id,
             "name": request.form.get("name"),
@@ -519,10 +516,7 @@ def delete_photo():
         # Step 3: Update the database with the new list
         supabase.table("profiles").update({"photos": existing_photos}).eq("id", user_id).execute()
 
-        # Step 4: Delete the file from Supabase Storage
-        # The filename is the part of the URL after the bucket path.
-        # e.g., 'profile_photos/user_123.jpg'
-        # Split the URL to get the file name
+        
         path_in_storage = '/'.join(photo_url.split('/')[-2:])
         supabase.storage.from_("profile_photos").remove([path_in_storage])
 
@@ -552,7 +546,7 @@ def see_other():
         flash("Restricted for VIP users only.", "warning")
         return redirect(url_for('dashboard'))
 
-    # --- Search support ---
+
     search_query = request.args.get("q", "").strip()
 
     query = supabase.table("profiles").select("*").neq("id", current_user_id)
@@ -608,7 +602,7 @@ def block_user(user_id):
 
     current_user = session['user_id']
 
-    # Get the name of the user being blocked
+   
     res = supabase.table("profiles").select("name").eq("id", user_id).execute()
     blocked_name = res.data[0]['name'] if res.data else "User"
 
@@ -629,7 +623,7 @@ def unblock_user(user_id):
 
     current_user = session['user_id']
 
-    # Get the name of the user being unblocked
+   
     res = supabase.table("profiles").select("name").eq("id", user_id).execute()
     unblocked_name = res.data[0]['name'] if res.data else "User"
 
@@ -752,7 +746,7 @@ def like(liked_id):
         return jsonify({"success": False, "error": "Cannot like yourself"}), 400
 
     if has_liked(liker_id, liked_id):
-        # Already liked → remove the like (unlike)
+        
         remove_like(liker_id, liked_id)
         return jsonify({
             "success": True,
@@ -761,7 +755,7 @@ def like(liked_id):
             "likes_count": get_likes_count(liked_id)
         })
     else:
-        # Not liked → add like
+        
         add_like(liker_id, liked_id)
         # Check for mutual match
         has_liked_back = has_liked(liked_id, liker_id)
@@ -800,11 +794,11 @@ def like2(liked_id):
 
     has_already_liked = has_liked(liker_id, liked_id)
 
-    # If not already liked, add the like first
+   
     if not has_already_liked:
         add_like(liker_id, liked_id)
 
-    # Check for mutual match regardless of whether a new like was added or not
+   
     has_liked_back = has_liked(liked_id, liker_id)
     match_data = {}
     if has_liked_back:
@@ -978,7 +972,7 @@ def get_matches():
 
     user_id = session["user_id"]
 
-    # Step 1: Get matches where matched_id = current user
+    # Get matches where matched_id = current user
     response = supabase.table("match_history") \
         .select("*") \
         .eq("matched_id", user_id) \
@@ -986,10 +980,10 @@ def get_matches():
 
     match_rows = response.data
 
-    # Step 2: Collect the IDs of the "other" users (who initiated the match)
+   
     other_user_ids = [row["user_id"] for row in match_rows]
 
-    # Step 3: Fetch profile details of the other users
+    
     profiles = []
     if other_user_ids:
         profiles_resp = supabase.table("profiles") \
@@ -1048,11 +1042,12 @@ def get_likes():
 
 @app.route('/logout')
 def logout():
-    # Clear all session data
+   
     session.clear()
-    # Force Flask to issue a new session ID
+   
     session.modified = True
     return redirect(url_for('landing'))
 
 if __name__ == '__main__':
     app.run(debug=True)
+
