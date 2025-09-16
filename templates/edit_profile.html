@@ -1,43 +1,43 @@
 {% extends 'base.html' %} {% block content %}
 <div
-  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 via-orange-100 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8"
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 via-orange-100 to-indigo-100 py-6 sm:py-12 px-4 sm:px-6 lg:px-8"
 >
-  <div
-    class="max-w-4xl w-full space-y-8 bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl border border-gray-200"
+  <button
+    onclick="window.history.back()"
+    class="absolute top-4 left-4 sm:top-6 sm:left-6 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-200 text-gray-700 rounded-lg sm:rounded-xl hover:bg-gray-300 transition text-sm sm:text-base z-10"
   >
-    <!-- Profile Header -->
+    ← Back
+  </button>
+
+  <div
+    class="max-w-4xl w-full space-y-6 sm:space-y-8 bg-white/80 backdrop-blur-md p-6 sm:p-10 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200"
+  >
     <div class="relative text-center">
-      <button
-        onclick="window.history.back()"
-        class="absolute left-0 top-1/2 -translate-y-1/2 px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition"
-      >
-        ← Back
-      </button>
-      <div class="flex justify-center mb-4">
+      <div class="flex justify-center mb-3 sm:mb-4">
         <img
           src="{{ profile.photos[0] if profile.photos else 'https://via.placeholder.com/150' }}"
           alt="Profile photo"
-          class="w-24 h-24 rounded-full border-4 border-yellow-400 shadow-md object-cover"
+          class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-yellow-400 shadow-md object-cover"
           id="current-profile-picture"
         />
       </div>
-      <h2 class="text-3xl font-extrabold text-gray-900">Edit Your Profile</h2>
-      <p class="mt-2 text-sm text-gray-600">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900">
+        Edit Your Profile
+      </h2>
+      <p class="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">
         Update your details to keep your profile fresh ✨
       </p>
     </div>
 
-    <!-- Form -->
     <form
-      class="mt-8 space-y-8"
+      class="mt-6 sm:mt-8 space-y-6 sm:space-y-8"
       action="{{ url_for('update_profile') }}"
       method="POST"
       enctype="multipart/form-data"
     >
       <input type="hidden" name="remember" value="true" />
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Name -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <label for="name" class="block text-sm font-medium text-gray-700"
             >Name</label
@@ -48,11 +48,10 @@
             type="text"
             value="{{ profile.name }}"
             required
-            class="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm p-3"
+            class="mt-1 block w-full rounded-lg sm:rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 text-sm p-2 sm:p-3"
           />
         </div>
 
-        <!-- DOB -->
         <div>
           <label
             for="dateOfBirth"
@@ -65,11 +64,10 @@
             type="date"
             value="{{ profile.dob }}"
             required
-            class="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm p-3"
+            class="mt-1 block w-full rounded-lg sm:rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 text-sm p-2 sm:p-3"
           />
         </div>
 
-        <!-- Location -->
         <div class="md:col-span-2">
           <label for="location" class="block text-sm font-medium text-gray-700"
             >Location</label
@@ -79,11 +77,10 @@
             name="location"
             type="text"
             value="{{ profile.location }}"
-            class="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm p-3"
+            class="mt-1 block w-full rounded-lg sm:rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 text-sm p-2 sm:p-3"
           />
         </div>
 
-        <!-- Bio -->
         <div class="md:col-span-2">
           <label for="bio" class="block text-sm font-medium text-gray-700"
             >Bio</label
@@ -92,13 +89,12 @@
             id="bio"
             name="bio"
             rows="4"
-            class="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm p-3"
+            class="mt-1 block w-full rounded-lg sm:rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 text-sm p-2 sm:p-3"
           >
 {{ profile.bio }}</textarea
           >
         </div>
 
-        <!-- Interests -->
         <div class="md:col-span-2">
           <label for="interests" class="block text-sm font-medium text-gray-700"
             >Interests (comma separated)</label
@@ -108,11 +104,10 @@
             name="interests"
             type="text"
             value="{{ profile.interests|join(', ') }}"
-            class="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm p-3"
+            class="mt-1 block w-full rounded-lg sm:rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 text-sm p-2 sm:p-3"
           />
         </div>
 
-        <!-- Profile Picture Upload with Clear Option -->
         <div class="md:col-span-2 relative">
           <label
             for="profile_picture"
@@ -121,11 +116,11 @@
             Update Profile Picture
           </label>
           <div
-            class="mt-2 flex justify-center rounded-2xl border-2 border-dashed border-gray-300 px-6 pt-6 pb-6 hover:border-yellow-400 transition"
+            class="mt-2 flex justify-center rounded-xl sm:rounded-2xl border-2 border-dashed border-gray-300 px-4 sm:px-6 pt-4 sm:pt-6 pb-4 sm:pb-6 hover:border-yellow-400 transition"
           >
             <div class="space-y-2 text-center">
               <svg
-                class="mx-auto h-12 w-12 text-yellow-400"
+                class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-yellow-400"
                 stroke="currentColor"
                 fill="none"
                 viewBox="0 0 48 48"
@@ -135,7 +130,7 @@
                   fill="currentColor"
                 />
               </svg>
-              <div class="flex text-sm text-gray-600 justify-center">
+              <div class="flex flex-col sm:flex-row text-sm text-gray-600 justify-center">
                 <label
                   for="profile_picture"
                   class="relative cursor-pointer rounded-md bg-white font-medium text-yellow-600 hover:text-yellow-500 focus-within:outline-none"
@@ -153,245 +148,336 @@
               <p class="text-xs text-gray-500">PNG, JPG up to 5MB</p>
             </div>
           </div>
-          <!-- Profile Picture Preview with Clear -->
           <div class="mt-4 flex justify-center relative">
             <img
               id="profile-picture-preview"
-              class="hidden w-24 h-24 rounded-full border-2 border-yellow-400 object-cover shadow"
+              class="hidden w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-yellow-400 object-cover shadow"
             />
             <button
               type="button"
               id="clear-profile-picture"
-              class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hidden"
+              class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm hidden"
             >
               ✖
             </button>
           </div>
         </div>
-        <!-- Gender -->
-<div>
-  <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-  <select
-    id="gender"
-    name="gender"
-    class="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm p-3"
-  >
-    <option value="male" {% if profile.gender == "male" %}selected{% endif %}>Male</option>
-    <option value="female" {% if profile.gender == "female" %}selected{% endif %}>Female</option>
-    <option value="non-binary" {% if profile.gender == "non-binary" %}selected{% endif %}>Non-binary</option>
-    <option value="prefer-not-to-say" {% if profile.gender == "prefer-not-to-say" %}selected{% endif %}>Prefer not to say</option>
-  </select>
-</div>
 
-<!-- Looking For -->
-<div class="md:col-span-2">
-  <label for="looking_for" class="block text-sm font-medium text-gray-700">
-    What are you looking for?
-  </label>
-  <input
-    type="text"
-    id="looking_for"
-    name="looking_for"
-    value="{{ profile.looking_for or '' }}"
-    placeholder="e.g. Friendship, Casual Dating, Long-term Relationship..."
-    class="mt-2 block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm p-3"
-  />
-</div>
+        <div>
+          <label for="gender" class="block text-sm font-medium text-gray-700"
+            >Gender</label
+          >
+          <select
+            id="gender"
+            name="gender"
+            class="mt-1 block w-full rounded-lg sm:rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 text-sm p-2 sm:p-3"
+          >
+            <option value="male" {% if profile.gender == "male" %}selected{% endif %}>Male</option>
+            <option value="female" {% if profile.gender == "female" %}selected{% endif %}>Female</option>
+            <option value="non-binary" {% if profile.gender == "non-binary" %}selected{% endif %}>Non-binary</option>
+            <option value="prefer-not-to-say" {% if profile.gender == "prefer-not-to-say" %}selected{% endif %}>Prefer not to say</option>
+          </select>
+        </div>
 
-<!-- Aesthetics -->
-<div class="md:col-span-2">
-  <label class="block text-sm font-medium text-gray-700">Describe your aesthetics</label>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-    {% set aesthetics = profile.aesthetics %}
+        <div class="md:col-span-2">
+          <label
+            for="looking_for"
+            class="block text-sm font-medium text-gray-700"
+          >
+            What are you looking for?
+          </label>
+          <input
+            type="text"
+            id="looking_for"
+            name="looking_for"
+            value="{{ profile.looking_for or '' }}"
+            placeholder="e.g. Friendship, Casual Dating, Long-term Relationship..."
+            class="mt-1 block w-full rounded-lg sm:rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 text-sm p-2 sm:p-3"
+          />
+        </div>
 
-    <!-- Traditional -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/traditional.jpg') }}" alt="Traditional"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="aesthetics" value="Traditional"
-             {% if aesthetics == "Traditional" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Traditional</span>
-    </label>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700"
+            >Describe your aesthetics</label
+          >
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+            {% set aesthetics = profile.aesthetics %}
 
-    <!-- Western -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/western.jpg') }}" alt="Western"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="aesthetics" value="Western"
-             {% if aesthetics == "Western" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Western</span>
-    </label>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/traditional.jpg') }}"
+                alt="Traditional"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="aesthetics"
+                value="Traditional"
+                {% if aesthetics == "Traditional" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Traditional</span>
+            </label>
 
-    <!-- Mixed -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/mixed.jpg') }}" alt="Mixed"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="aesthetics" value="Mixed"
-             {% if aesthetics == "Mixed" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Mixed</span>
-    </label>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/western.jpg') }}"
+                alt="Western"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="aesthetics"
+                value="Western"
+                {% if aesthetics == "Western" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Western</span>
+            </label>
 
-    <!-- Other -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/other.jpg') }}" alt="Other"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="aesthetics" value="Other"
-             {% if aesthetics not in ["Traditional", "Western", "Mixed", None] %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Other</span>
-      <input type="text" name="aesthetics_custom"
-             value="{% if aesthetics not in ['Traditional', 'Western', 'Mixed', None] %}{{ aesthetics }}{% else %}{{ profile.aesthetics_custom or '' }}{% endif %}"
-             placeholder="Your own style"
-             class="mt-2 px-2 py-1 border rounded-xl w-full text-center" />
-    </label>
-  </div>
-</div>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/mixed.jpg') }}"
+                alt="Mixed"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="aesthetics"
+                value="Mixed"
+                {% if aesthetics == "Mixed" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Mixed</span>
+            </label>
 
-<!-- Relationship Preference -->
-<div class="md:col-span-2">
-  <label class="block text-sm font-medium text-gray-700">Relationship Preference</label>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-    {% set relationship = profile.relationship %}
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/other.jpg') }}"
+                alt="Other"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="aesthetics"
+                value="Other"
+                {% if aesthetics not in ["Traditional", "Western", "Mixed", None] %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Other</span>
+              <input
+                type="text"
+                name="aesthetics_custom"
+                value="{% if aesthetics not in ['Traditional', 'Western', 'Mixed', None] %}{{ aesthetics }}{% else %}{{ profile.aesthetics_custom or '' }}{% endif %}"
+                placeholder="Your own style"
+                class="mt-2 px-2 py-1 border rounded-xl w-full text-center text-sm"
+              />
+            </label>
+          </div>
+        </div>
 
-    <!-- Long term -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/long_term.jpg') }}" alt="Long term"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="relationship" value="Long term"
-             {% if relationship == "Long term" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Long term</span>
-    </label>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700"
+            >Relationship Preference</label
+          >
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
+            {% set relationship = profile.relationship %}
 
-    <!-- Short term -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/short_term.jpeg') }}" alt="Short term"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="relationship" value="Short term"
-             {% if relationship == "Short term" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Short term</span>
-    </label>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/long_term.jpg') }}"
+                alt="Long term"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="relationship"
+                value="Long term"
+                {% if relationship == "Long term" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Long term</span>
+            </label>
 
-    <!-- Other -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/other_relationship.jpeg') }}" alt="Other"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="relationship" value="Other"
-             {% if relationship not in ["Long term", "Short term", None] %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Other</span>
-      <input type="text" name="relationship_custom"
-             value="{% if relationship not in ['Long term', 'Short term', None] %}{{ relationship }}{% else %}{{ profile.relationship_custom or '' }}{% endif %}"
-             placeholder="Your own preference"
-             class="mt-2 px-2 py-1 border rounded-xl w-full text-center" />
-    </label>
-  </div>
-</div>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/short_term.jpeg') }}"
+                alt="Short term"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="relationship"
+                value="Short term"
+                {% if relationship == "Short term" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Short term</span>
+            </label>
 
-<!-- Fun Option -->
-<div class="md:col-span-2">
-  <label class="block text-sm font-medium text-gray-700">What Paglu are you?</label>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-    {% set fun_option = profile.fun_option %}
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/other_relationship.jpeg') }}"
+                alt="Other"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="relationship"
+                value="Other"
+                {% if relationship not in ["Long term", "Short term", None] %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Other</span>
+              <input
+                type="text"
+                name="relationship_custom"
+                value="{% if relationship not in ['Long term', 'Short term', None] %}{{ relationship }}{% else %}{{ profile.relationship_custom or '' }}{% endif %}"
+                placeholder="Your own preference"
+                class="mt-2 px-2 py-1 border rounded-xl w-full text-center text-sm"
+              />
+            </label>
+          </div>
+        </div>
 
-    <!-- Pandal hopping -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/fun_option1.jpg') }}" alt="Pandal hopping paglu"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="fun_option" value="Pandal hopping paglu"
-             {% if fun_option == "Pandal hopping paglu" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Pandal hopping paglu</span>
-    </label>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700"
+            >What Paglu are you?</label
+          >
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
+            {% set fun_option = profile.fun_option %}
 
-    <!-- Boshe adda mara -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/fun_option2.jpeg') }}" alt="Boshe adda mara paglu"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="fun_option" value="Boshe adda mara paglu"
-             {% if fun_option == "Boshe adda mara paglu" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Boshe adda mara paglu</span>
-    </label>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/fun_option1.jpg') }}"
+                alt="Pandal hopping paglu"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="fun_option"
+                value="Pandal hopping paglu"
+                {% if fun_option == "Pandal hopping paglu" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Pandal hopping paglu</span>
+            </label>
 
-    <!-- Other -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/fun_option_other.jpg') }}" alt="Other"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="fun_option" value="Other"
-             {% if fun_option not in ["Pandal hopping paglu", "Boshe adda mara paglu", None] %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Other</span>
-      <input type="text" name="fun_option_custom"
-             value="{% if fun_option not in ['Pandal hopping paglu', 'Boshe adda mara paglu', None] %}{{ fun_option }}{% else %}{{ profile.fun_option_custom or '' }}{% endif %}"
-             placeholder="Your own fun style"
-             class="mt-2 px-2 py-1 border rounded-xl w-full text-center" />
-    </label>
-  </div>
-</div>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/fun_option2.jpeg') }}"
+                alt="Boshe adda mara paglu"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="fun_option"
+                value="Boshe adda mara paglu"
+                {% if fun_option == "Boshe adda mara paglu" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Boshe adda mara paglu</span>
+            </label>
 
-<!-- Hangout -->
-<div class="md:col-span-2">
-  <label class="block text-sm font-medium text-gray-700">Favorite Hangout Place</label>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-    {% set hangout = profile.hangout %}
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/fun_option_other.jpg') }}"
+                alt="Other"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="fun_option"
+                value="Other"
+                {% if fun_option not in ["Pandal hopping paglu", "Boshe adda mara paglu", None] %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Other</span>
+              <input
+                type="text"
+                name="fun_option_custom"
+                value="{% if fun_option not in ['Pandal hopping paglu', 'Boshe adda mara paglu', None] %}{{ fun_option }}{% else %}{{ profile.fun_option_custom or '' }}{% endif %}"
+                placeholder="Your own fun style"
+                class="mt-2 px-2 py-1 border rounded-xl w-full text-center text-sm"
+              />
+            </label>
+          </div>
+        </div>
 
-    <!-- Clubs -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/hangout_clubs.jpg') }}" alt="Clubs"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="hangout" value="Clubs"
-             {% if hangout == "Clubs" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Clubs</span>
-    </label>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700"
+            >Favorite Hangout Place</label
+          >
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
+            {% set hangout = profile.hangout %}
 
-    <!-- Ghat -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/hangout_ghat.jpg') }}" alt="Ghat"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="hangout" value="Ghat"
-             {% if hangout == "Ghat" %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Ghat</span>
-    </label>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/hangout_clubs.jpg') }}"
+                alt="Clubs"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="hangout"
+                value="Clubs"
+                {% if hangout == "Clubs" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Clubs</span>
+            </label>
 
-    <!-- Other -->
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="{{ url_for('static', filename='images/hangout_other.jpeg') }}" alt="Other"
-           class="w-24 h-24 object-cover rounded-xl mb-2" />
-      <input type="radio" name="hangout" value="Other"
-             {% if hangout not in ["Clubs", "Ghat", None] %}checked{% endif %}
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-      <span class="mt-1">Other</span>
-      <input type="text" name="hangout_custom"
-             value="{% if hangout not in ['Clubs', 'Ghat', None] %}{{ hangout }}{% else %}{{ profile.hangout_custom or '' }}{% endif %}"
-             placeholder="Your own hangout preference"
-             class="mt-2 px-2 py-1 border rounded-xl w-full text-center" />
-    </label>
-  </div>
-</div>
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/hangout_ghat.jpg') }}"
+                alt="Ghat"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="hangout"
+                value="Ghat"
+                {% if hangout == "Ghat" %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Ghat</span>
+            </label>
 
+            <label class="flex flex-col items-center cursor-pointer text-center">
+              <img
+                src="{{ url_for('static', filename='images/hangout_other.jpeg') }}"
+                alt="Other"
+                class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl mb-1 sm:mb-2"
+              />
+              <input
+                type="radio"
+                name="hangout"
+                value="Other"
+                {% if hangout not in ["Clubs", "Ghat", None] %}checked{% endif %}
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+              <span class="mt-1 text-sm">Other</span>
+              <input
+                type="text"
+                name="hangout_custom"
+                value="{% if hangout not in ['Clubs', 'Ghat', None] %}{{ hangout }}{% else %}{{ profile.hangout_custom or '' }}{% endif %}"
+                placeholder="Your own hangout preference"
+                class="mt-2 px-2 py-1 border rounded-xl w-full text-center text-sm"
+              />
+            </label>
+          </div>
+        </div>
 
-
-
-
-
-        <!-- Photo Upload -->
         <div class="md:col-span-2">
           <label class="block text-sm font-medium text-gray-700"
             >Add New Photos</label
           >
           <div
-            class="mt-2 flex justify-center rounded-2xl border-2 border-dashed border-gray-300 px-6 pt-6 pb-6 hover:border-yellow-400 transition"
+            class="mt-2 flex justify-center rounded-xl sm:rounded-2xl border-2 border-dashed border-gray-300 px-4 sm:px-6 pt-4 sm:pt-6 pb-4 sm:pb-6 hover:border-yellow-400 transition"
           >
             <div class="space-y-2 text-center">
               <svg
-                class="mx-auto h-12 w-12 text-yellow-400"
+                class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-yellow-400"
                 stroke="currentColor"
                 fill="none"
                 viewBox="0 0 48 48"
@@ -404,7 +490,7 @@
                   stroke-linejoin="round"
                 />
               </svg>
-              <div class="flex text-sm text-gray-600">
+              <div class="flex text-sm text-gray-600 justify-center">
                 <label
                   for="photos"
                   class="relative cursor-pointer rounded-md bg-white font-medium text-yellow-600 hover:text-yellow-500 focus-within:outline-none"
@@ -423,19 +509,17 @@
               <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
             </div>
           </div>
-          <!-- Multiple Photos Preview -->
           <div
             id="photos-preview"
-            class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"
+            class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3"
           ></div>
         </div>
       </div>
 
-      <!-- Save Button -->
-      <div class="flex justify-end">
+      <div class="flex justify-center sm:justify-end">
         <button
           type="submit"
-          class="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-xl font-semibold shadow-lg hover:from-yellow-600 hover:to-orange-700 transform hover:scale-105 transition-all duration-300 ease-in-out"
+          class="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-xl font-semibold shadow-lg hover:from-yellow-600 hover:to-orange-700 transform hover:scale-105 transition-all duration-300 ease-in-out"
         >
           💾 Save Profile
         </button>
@@ -444,7 +528,6 @@
   </div>
 </div>
 
-<!-- JS for Previews -->
 <script>
   const profileInput = document.getElementById("profile_picture");
   const profilePreview = document.getElementById("profile-picture-preview");
@@ -469,15 +552,7 @@
     profilePreview.classList.add("hidden");
     clearProfileBtn.classList.add("hidden");
   });
-</script>
 
-<!-- Additional Photos with Clear Option -->
-<div
-  id="photos-preview"
-  class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"
-></div>
-
-<script>
   const photosInput = document.getElementById("photos");
   const photosPreview = document.getElementById("photos-preview");
 
@@ -492,7 +567,7 @@
         const img = document.createElement("img");
         img.src = event.target.result;
         img.className =
-          "w-24 h-24 object-cover rounded-xl border-2 border-yellow-300 shadow";
+          "w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl border-2 border-yellow-300 shadow";
 
         const btn = document.createElement("button");
         btn.type = "button";
