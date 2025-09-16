@@ -1,4 +1,14 @@
 {% extends 'base.html' %} {% block content %}
+<style>
+  .form-step {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .hidden {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+</style>
+
 <div
   class="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-blue-50 px-4 py-8"
 >
@@ -349,7 +359,7 @@
               <input
                 type="radio"
                 name="fun_option"
-                value="Option1"
+                value="Pandal hopping paglu"
                 class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
               />
               <span class="mt-1">Pandal hopping paglu</span>
@@ -364,7 +374,7 @@
               <input
                 type="radio"
                 name="fun_option"
-                value="Option2"
+                value="Boshe adda mara paglu"
                 class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
               />
               <span class="mt-1">Boshe adda mara paglu</span>
@@ -486,6 +496,658 @@
   </div>
 </div>
 
+<style>
+    .form-step {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .hidden {
+      opacity: 0;
+      transform: translateX(10px);
+    }
+</style>
+
+<div
+  class="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-blue-50 px-4 py-8"
+>
+   
+  <div class="max-w-2xl mx-auto">
+       
+    <div class="flex justify-between items-center mb-8">
+           
+      <div class="flex items-center space-x-2">
+                <i data-lucide="heart" class="h-8 w-8 text-yellow-500"></i>    
+           
+        <span
+          class="text-2xl font-bold bg-gradient-to-r from-yellow-500 to-orange-600 bg-clip-text text-transparent"
+        >
+                    Sharodiya-Swipe        
+        </span>
+             
+      </div>
+           
+      <a
+        href="{{ url_for('logout') }}"
+        class="text-gray-600 hover:text-yellow-600 transition-colors"
+      >
+                Logout      
+      </a>
+         
+    </div>
+
+       
+    <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
+                 
+      <div class="mb-8">
+               
+        <div class="flex justify-between items-center mb-4">
+                   
+          <span id="step-counter" class="text-sm font-medium text-gray-600"
+            >Step 1 of 4</span
+          >
+                   
+          <span id="step-percentage" class="text-sm font-medium text-gray-600"
+            >25%</span
+          >
+                 
+        </div>
+               
+        <div class="w-full bg-gray-200 rounded-full h-2">
+                   
+          <div
+            id="progress-bar"
+            class="bg-gradient-to-r from-yellow-500 to-orange-600 h-2 rounded-full transition-all duration-300"
+            style="width: 25%"
+          ></div>
+                 
+        </div>
+             
+      </div>
+
+           
+      <form
+        id="profile-form"
+        method="POST"
+        action="{{ url_for('profile_setup') }}"
+        enctype="multipart/form-data"
+      >
+                       
+        <div id="step-1" class="form-step space-y-6">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        Basic Information          
+          </h2>
+                   
+          <div>
+                       
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Display Name *</label
+            >
+                       
+            <input
+              type="text"
+              name="name"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500"
+              placeholder="Enter your name"
+            />
+                       
+            <p class="text-red-500 text-sm mt-1 error-message"></p>
+                     
+          </div>
+                   
+          <div>
+                       
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Date of Birth *</label
+            >
+                       
+            <input
+              type="date"
+              name="dateOfBirth"
+              id="dateOfBirth"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500"
+            />
+                       
+            <p class="text-red-500 text-sm mt-1 error-message"></p>
+                       
+            <p id="age-display" class="text-gray-500 text-sm mt-1"></p>
+                     
+          </div>
+                   
+          <div>
+                       
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Gender</label
+            >
+                       
+            <select
+              name="gender"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500"
+            >
+                           
+              <option value="male">Male</option>
+                           
+              <option value="female">Female</option>
+                           
+              <option value="non-binary">Non-binary</option>
+                           
+              <option value="prefer-not-to-say">Prefer not to say</option>
+                         
+            </select>
+                     
+          </div>
+                 
+        </div>
+
+                       
+        <div id="step-2" class="form-step space-y-6 hidden">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        Matchmaking Preferences          
+          </h2>
+                   
+          <div>
+                       
+            <label class="block text-sm font-medium text-gray-700 mb-3"
+              >Who are you interested in? *</label
+            >
+                       
+            <div class="space-y-2">
+                           
+              <label class="flex items-center"
+                ><input
+                  type="checkbox"
+                  name="interestedIn"
+                  value="Intelligence"
+                  class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+                />
+                                <span class="ml-2">Intelligence</span></label
+              >
+                           
+              <label class="flex items-center"
+                ><input
+                  type="checkbox"
+                  name="interestedIn"
+                  value="Humor"
+                  class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+                />
+                                <span class="ml-2">Humor</span></label
+              >
+                           
+              <label class="flex items-center"
+                ><input
+                  type="checkbox"
+                  name="interestedIn"
+                  value="Kindness"
+                  class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+                />
+                                <span class="ml-2">Kindness</span></label
+              >
+                         
+            </div>
+                       
+            <p class="text-red-500 text-sm mt-1 error-message"></p>
+                     
+          </div>
+                   
+          <div>
+                       
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Location *</label
+            >
+                       
+            <input
+              type="text"
+              name="location"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500"
+              placeholder="City, State/Country"
+            />
+                       
+            <p class="text-red-500 text-sm mt-1 error-message"></p>
+                     
+          </div>
+                 
+        </div>
+
+                       
+        <div id="step-3" class="form-step space-y-6 hidden">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        Tell Us About Yourself          
+          </h2>
+                   
+          <div>
+                       
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Bio * (Minimum 20 characters)</label
+            >
+                       
+            <textarea
+              name="bio"
+              rows="4"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 resize-none"
+              placeholder="Tell others about yourself..."
+            ></textarea>
+                       
+            <p class="text-red-500 text-sm mt-1 error-message"></p>
+                     
+          </div>
+                   
+          <div>
+                       
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Interests & Hobbies</label
+            >
+                       
+            <input
+              type="text"
+              name="interests"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500"
+              placeholder="e.g., Reading, Hiking (comma-separated)"
+            />
+                     
+          </div>
+                 
+        </div>
+
+                       
+        <div id="step-4" class="form-step space-y-6 hidden">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        Add Your Photos *          
+          </h2>
+                   
+          <p class="text-gray-600 text-center">Upload your profile photo</p>
+                   
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="photos-grid">
+                       
+            <label
+              for="photos-input"
+              id="upload-label"
+              class="cursor-pointer h-32 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center hover:border-yellow-500 transition-colors"
+            >
+                           
+              <i data-lucide="upload" class="h-8 w-8 text-gray-400 mb-2"></i>  
+                         
+              <span class="text-gray-500 text-sm">Click to upload</span>        
+                 
+            </label>
+                     
+          </div>
+                   
+          <input
+            type="file"
+            name="photos"
+            id="photos-input"
+            accept="image/*"
+            multiple
+            class="hidden"
+          />
+                   
+          <p class="text-red-500 text-sm mt-1 error-message text-center"></p>
+                 
+        </div>
+
+                       
+        <div id="step-5" class="form-step space-y-6 hidden">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        Describe your aesthetics          
+          </h2>
+                   
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/traditional.jpg') }}"
+                alt="Traditional"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="aesthetics"
+                value="Traditional"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Traditional</span>            
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/western.jpg') }}"
+                alt="Western"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="aesthetics"
+                value="Western"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Western</span>            
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/mixed.jpg') }}"
+                alt="Mixed"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="aesthetics"
+                value="Mixed"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Mixed</span>            
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/other.jpg') }}"
+                alt="Other"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="aesthetics"
+                value="Other"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Other</span>              
+              <input
+                type="text"
+                name="aesthetics_custom"
+                class="mt-2 px-2 py-1 border rounded-xl w-full text-center"
+                placeholder="Your own style"
+              />
+                         
+            </label>
+                     
+          </div>
+                 
+        </div>
+
+               
+        <div id="step-6" class="form-step space-y-6 hidden">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        Relationship Preference          
+          </h2>
+                   
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/long_term.jpg') }}"
+                alt="Long term"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="relationship"
+                value="Long term"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Long term</span>            
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/short_term.jpeg') }}"
+                alt="Short term"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="relationship"
+                value="Short term"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Short term</span>            
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/other_relationship.jpeg') }}"
+                alt="Other"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="relationship"
+                value="Other"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Other</span>              
+              <input
+                type="text"
+                name="relationship_custom"
+                class="mt-2 px-2 py-1 border rounded-xl w-full text-center"
+                placeholder="Your own preference"
+              />
+                         
+            </label>
+                     
+          </div>
+                 
+        </div>
+
+               
+        <div id="step-7" class="form-step space-y-6 hidden">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        What Paglu are you?          
+          </h2>
+                   
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/fun_option1.jpg') }}"
+                alt="Pandal hopping paglu"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="fun_option"
+                value="Pandal hopping paglu"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Pandal hopping paglu</span>      
+                   
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/fun_option2.jpeg') }}"
+                alt="Boshe adda mara paglu"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="fun_option"
+                value="Boshe adda mara paglu"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Boshe adda mara paglu</span>    
+                     
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/fun_option_other.jpg') }}"
+                alt="Other"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="fun_option"
+                value="Other"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Other</span>              
+              <input
+                type="text"
+                name="fun_option_custom"
+                class="mt-2 px-2 py-1 border rounded-xl w-full text-center"
+                placeholder="Your own fun style"
+              />
+                         
+            </label>
+                     
+          </div>
+                 
+        </div>
+
+               
+        <div id="step-8" class="form-step space-y-6 hidden">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        Hangout Preference          
+          </h2>
+                   
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/hangout_clubs.jpg') }}"
+                alt="Clubs"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="hangout"
+                value="Clubs"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Clubs</span>            
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/hangout_ghat.jpg') }}"
+                alt="Ghat"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="hangout"
+                value="Ghat"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Ghat</span>            
+            </label>
+
+                       
+            <label class="flex flex-col items-center cursor-pointer">
+                           
+              <img
+                src="{{ url_for('static', filename='images/hangout_other.jpeg') }}"
+                alt="Other"
+                class="w-24 h-24 object-cover rounded-xl mb-2"
+              />
+                           
+              <input
+                type="radio"
+                name="hangout"
+                value="Other"
+                class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
+              />
+                            <span class="mt-1">Other</span>              
+              <input
+                type="text"
+                name="hangout_custom"
+                class="mt-2 px-2 py-1 border rounded-xl w-full text-center"
+                placeholder="Your own hangout preference"
+              />
+                         
+            </label>
+                     
+          </div>
+                 
+        </div>
+
+               
+        <div id="step-9" class="form-step space-y-6 hidden">
+                   
+          <h2 class="text-2xl font-bold text-gray-900 text-center">
+                        What Are You Looking For?          
+          </h2>
+                   
+          <textarea
+            name="looking_for"
+            rows="3"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 resize-none"
+            placeholder="Describe what you are looking for..."
+          ></textarea>
+                   
+          <p class="text-red-500 text-sm mt-1 error-message"></p>
+                 
+        </div>
+
+                       
+        <div class="flex justify-between mt-8">
+                   
+          <button
+            type="button"
+            id="prev-btn"
+            class="flex items-center px-6 py-3 rounded-xl font-medium bg-gray-200 text-gray-700 hover:bg-gray-300"
+          >
+                       
+            <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i> Previous      
+               
+          </button>
+                   
+          <button
+            type="button"
+            id="next-btn"
+            class="flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-xl font-medium hover:from-yellow-600 hover:to-orange-700 transform hover:scale-105 shadow-lg"
+          >
+                        Next
+            <i data-lucide="arrow-right" class="h-4 w-4 ml-2"></i>          
+          </button>
+                 
+        </div>
+             
+      </form>
+         
+    </div>
+     
+  </div>
+</div>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const totalSteps = 9;
@@ -504,6 +1166,8 @@
     const photosInput = document.getElementById("photos-input");
     const photosGrid = document.getElementById("photos-grid");
     const uploadLabel = document.getElementById("upload-label");
+
+    let uploadedFiles = []; // Array to hold all files
 
     function updateButtons() {
       prevBtn.classList.toggle("hidden", currentStep === 1);
@@ -594,7 +1258,7 @@
           }
           break;
         case 4:
-          if (photosInput.files.length === 0) {
+          if (uploadedFiles.length === 0) {
             isValid = false;
             document.querySelector("#step-4 .error-message").textContent =
               "At least one photo is required";
@@ -688,36 +1352,46 @@
       ageDisplay.textContent = age >= 0 ? `Age: ${age}` : "";
     });
 
-    photosInput.addEventListener("change", () => {
-      photosGrid
-        .querySelectorAll(".photo-preview")
-        .forEach((el) => el.remove());
-      const files = Array.from(photosInput.files);
-      if (files.length > 5) {
-        alert("You can only upload a maximum of 5 photos.");
+    photosInput.addEventListener("change", (event) => {
+      // Get new files from the event
+      const newFiles = Array.from(event.target.files);
+      const totalFiles = uploadedFiles.length + newFiles.length; // Check file count limit
+
+      if (totalFiles > 5) {
+        alert("You can only upload a maximum of 5 photos."); // Clear the input so the user can try again
         photosInput.value = "";
         return;
-      }
-      files.forEach((file, index) => {
+      } // Add new files to the existing array
+
+      uploadedFiles = uploadedFiles.concat(newFiles); // Create a new DataTransfer object to update the file input
+
+      const dt = new DataTransfer();
+      uploadedFiles.forEach((file) => dt.items.add(file));
+      photosInput.files = dt.files; // Clear existing previews to prevent duplicates
+
+      photosGrid
+        .querySelectorAll(".photo-preview")
+        .forEach((el) => el.remove()); // Render all uploaded files
+
+      uploadedFiles.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = function (e) {
           const div = document.createElement("div");
           div.className = "relative photo-preview";
           div.innerHTML = `
-          <img src="${e.target.result}" class="w-full h-32 object-cover rounded-xl">
-          <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 remove-photo-btn">&times;</button>
-        `;
+            <img src="${e.target.result}" class="w-full h-32 object-cover rounded-xl">
+            <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 remove-photo-btn">&times;</button>
+          `;
           photosGrid.insertBefore(div, uploadLabel);
           div
             .querySelector(".remove-photo-btn")
             .addEventListener("click", () => {
+              // Remove file from the array and update the input
+              uploadedFiles.splice(index, 1);
+              const newDt = new DataTransfer();
+              uploadedFiles.forEach((f) => newDt.items.add(f));
+              photosInput.files = newDt.files;
               div.remove();
-              const dt = new DataTransfer();
-              const remainingFiles = Array.from(photosInput.files).filter(
-                (_, i) => i !== index
-              );
-              remainingFiles.forEach((f) => dt.items.add(f));
-              photosInput.files = dt.files;
             });
         };
         reader.readAsDataURL(file);
@@ -743,4 +1417,5 @@
     showStep(1);
   });
 </script>
+
 {% endblock %}
