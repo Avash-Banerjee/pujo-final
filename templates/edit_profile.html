@@ -198,39 +198,54 @@
   />
 </div>
 
-
-
 <!-- Aesthetics -->
 <div class="md:col-span-2">
   <label class="block text-sm font-medium text-gray-700">Describe your aesthetics</label>
-  <div class="flex flex-wrap gap-6 mt-2">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
     {% set aesthetics = profile.aesthetics %}
-    <label class="flex items-center">
+
+    <!-- Traditional -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/traditional.jpg') }}" alt="Traditional"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
       <input type="radio" name="aesthetics" value="Traditional"
-        {% if aesthetics == "Traditional" %}checked{% endif %}
-        class="text-yellow-600"/>
-      <span class="ml-2">Traditional</span>
+             {% if aesthetics == "Traditional" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Traditional</span>
     </label>
-    <label class="flex items-center">
+
+    <!-- Western -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/western.jpg') }}" alt="Western"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
       <input type="radio" name="aesthetics" value="Western"
-        {% if aesthetics == "Western" %}checked{% endif %}
-        class="text-yellow-600"/>
-      <span class="ml-2">Western</span>
+             {% if aesthetics == "Western" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Western</span>
     </label>
-    <label class="flex items-center">
+
+    <!-- Mixed -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/mixed.jpg') }}" alt="Mixed"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
       <input type="radio" name="aesthetics" value="Mixed"
-        {% if aesthetics == "Mixed" %}checked{% endif %}
-        class="text-yellow-600"/>
-      <span class="ml-2">Mixed</span>
+             {% if aesthetics == "Mixed" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Mixed</span>
     </label>
-    <label class="flex items-center">
+
+    <!-- Other -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/other.jpg') }}" alt="Other"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
       <input type="radio" name="aesthetics" value="Other"
-        {% if aesthetics == "Other" %}checked{% endif %}
-        class="text-yellow-600"/>
-      <span class="ml-2">Other:</span>
+             {% if aesthetics not in ["Traditional", "Western", "Mixed", None] %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Other</span>
       <input type="text" name="aesthetics_custom"
-        value="{{ profile.aesthetics_custom or '' }}"
-        class="ml-2 px-2 py-1 border rounded-xl"/>
+             value="{% if aesthetics not in ['Traditional', 'Western', 'Mixed', None] %}{{ aesthetics }}{% else %}{{ profile.aesthetics_custom or '' }}{% endif %}"
+             placeholder="Your own style"
+             class="mt-2 px-2 py-1 border rounded-xl w-full text-center" />
     </label>
   </div>
 </div>
@@ -238,31 +253,132 @@
 <!-- Relationship Preference -->
 <div class="md:col-span-2">
   <label class="block text-sm font-medium text-gray-700">Relationship Preference</label>
-  <div class="flex flex-wrap gap-6 mt-2">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
     {% set relationship = profile.relationship %}
-    <label class="flex items-center">
+
+    <!-- Long term -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/long_term.jpg') }}" alt="Long term"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
       <input type="radio" name="relationship" value="Long term"
-        {% if relationship == "Long term" %}checked{% endif %}
-        class="text-yellow-600"/>
-      <span class="ml-2">Long term</span>
+             {% if relationship == "Long term" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Long term</span>
     </label>
-    <label class="flex items-center">
+
+    <!-- Short term -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/short_term.jpeg') }}" alt="Short term"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
       <input type="radio" name="relationship" value="Short term"
-        {% if relationship == "Short term" %}checked{% endif %}
-        class="text-yellow-600"/>
-      <span class="ml-2">Short term</span>
+             {% if relationship == "Short term" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Short term</span>
     </label>
-    <label class="flex items-center">
+
+    <!-- Other -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/other_relationship.jpeg') }}" alt="Other"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
       <input type="radio" name="relationship" value="Other"
-        {% if relationship == "Other" %}checked{% endif %}
-        class="text-yellow-600"/>
-      <span class="ml-2">Other:</span>
+             {% if relationship not in ["Long term", "Short term", None] %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Other</span>
       <input type="text" name="relationship_custom"
-        value="{{ profile.relationship_custom or '' }}"
-        class="ml-2 px-2 py-1 border rounded-xl"/>
+             value="{% if relationship not in ['Long term', 'Short term', None] %}{{ relationship }}{% else %}{{ profile.relationship_custom or '' }}{% endif %}"
+             placeholder="Your own preference"
+             class="mt-2 px-2 py-1 border rounded-xl w-full text-center" />
     </label>
   </div>
 </div>
+
+<!-- Fun Option -->
+<div class="md:col-span-2">
+  <label class="block text-sm font-medium text-gray-700">What Paglu are you?</label>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+    {% set fun_option = profile.fun_option %}
+
+    <!-- Pandal hopping -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/fun_option1.jpg') }}" alt="Pandal hopping paglu"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
+      <input type="radio" name="fun_option" value="Pandal hopping paglu"
+             {% if fun_option == "Pandal hopping paglu" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Pandal hopping paglu</span>
+    </label>
+
+    <!-- Boshe adda mara -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/fun_option2.jpeg') }}" alt="Boshe adda mara paglu"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
+      <input type="radio" name="fun_option" value="Boshe adda mara paglu"
+             {% if fun_option == "Boshe adda mara paglu" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Boshe adda mara paglu</span>
+    </label>
+
+    <!-- Other -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/fun_option_other.jpg') }}" alt="Other"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
+      <input type="radio" name="fun_option" value="Other"
+             {% if fun_option not in ["Pandal hopping paglu", "Boshe adda mara paglu", None] %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Other</span>
+      <input type="text" name="fun_option_custom"
+             value="{% if fun_option not in ['Pandal hopping paglu', 'Boshe adda mara paglu', None] %}{{ fun_option }}{% else %}{{ profile.fun_option_custom or '' }}{% endif %}"
+             placeholder="Your own fun style"
+             class="mt-2 px-2 py-1 border rounded-xl w-full text-center" />
+    </label>
+  </div>
+</div>
+
+<!-- Hangout -->
+<div class="md:col-span-2">
+  <label class="block text-sm font-medium text-gray-700">Favorite Hangout Place</label>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+    {% set hangout = profile.hangout %}
+
+    <!-- Clubs -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/hangout_clubs.jpg') }}" alt="Clubs"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
+      <input type="radio" name="hangout" value="Clubs"
+             {% if hangout == "Clubs" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Clubs</span>
+    </label>
+
+    <!-- Ghat -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/hangout_ghat.jpg') }}" alt="Ghat"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
+      <input type="radio" name="hangout" value="Ghat"
+             {% if hangout == "Ghat" %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Ghat</span>
+    </label>
+
+    <!-- Other -->
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="{{ url_for('static', filename='images/hangout_other.jpeg') }}" alt="Other"
+           class="w-24 h-24 object-cover rounded-xl mb-2" />
+      <input type="radio" name="hangout" value="Other"
+             {% if hangout not in ["Clubs", "Ghat", None] %}checked{% endif %}
+             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
+      <span class="mt-1">Other</span>
+      <input type="text" name="hangout_custom"
+             value="{% if hangout not in ['Clubs', 'Ghat', None] %}{{ hangout }}{% else %}{{ profile.hangout_custom or '' }}{% endif %}"
+             placeholder="Your own hangout preference"
+             class="mt-2 px-2 py-1 border rounded-xl w-full text-center" />
+    </label>
+  </div>
+</div>
+
+
+
+
 
 
         <!-- Photo Upload -->
