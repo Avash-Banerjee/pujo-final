@@ -85,6 +85,45 @@
             </div>
           </div>
 
+          <!-- Preferences Section -->
+          <div class="mt-4 sm:mt-6">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3"
+            >
+              {{ profile.name }}'s Preferences
+            </h3>
+            <ul
+              class="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-gray-700"
+            >
+              {% if profile.aesthetics %}
+              <li>
+                <span class="font-medium text-gray-900">Aesthetics:</span>
+                {{ profile.aesthetics }}
+              </li>
+              {% endif %} {% if profile.relationship %}
+              <li>
+                <span class="font-medium text-gray-900">Relationship:</span>
+                {{ profile.relationship }}
+              </li>
+              {% endif %} {% if profile.fun_option %}
+              <li>
+                <span class="font-medium text-gray-900">Fun Option:</span>
+                {{ profile.fun_option }}
+              </li>
+              {% endif %} {% if profile.hangout %}
+              <li>
+                <span class="font-medium text-gray-900">Hangout:</span>
+                {{ profile.hangout }}
+              </li>
+              {% endif %} {% if profile.looking_for %}
+              <li>
+                <span class="font-medium text-gray-900">Looking For:</span>
+                {{ profile.looking_for }}
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+
           <div class="mt-3 sm:mt-4 md:mt-6 space-y-2 sm:space-y-3 md:space-y-4">
             <a
               href="{{ url_for('chat', receiver_id=profile['id']) }}"
