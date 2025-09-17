@@ -949,22 +949,42 @@ def next_profile():
     else:
         opposite_genders = ["male", "female", "non-binary", "prefer-not-to-say"]  # fallback
 
-    # Fetch potential matches
+    # Get already viewed profiles
+    viewed_res = supabase.table("viewed_profiles") \
+        .select("viewed_id") \
+        .eq("user_id", current_user_id) \
+        .execute()
+    viewed_ids = [row["viewed_id"] for row in viewed_res.data]
+
+    # Fetch potential matches (excluding viewed)
     potential_matches_res = (
         supabase.table("profiles")
         .select("id, name, age, bio, photos")
-        .in_("gender", opposite_genders)     # ✅ fix here
+        .in_("gender", opposite_genders)
         .neq("id", current_user_id)
+        .not_.in_("id", viewed_ids)
+  # ✅ exclude already viewed
         .execute()
     )
 
     potential_matches = potential_matches_res.data
-    if not potential_matches:
-        return jsonify({"error": "No matches found"}), 404
 
+    # If no profiles left, reset viewed list & start fresh
+    if not potential_matches:
+        supabase.table("viewed_profiles").delete().eq("user_id", current_user_id).execute()
+        return jsonify({"error": "No new matches left, resetting..."}), 404
+
+    # Pick a random profile from remaining
     matched_profile = random.choice(potential_matches)
 
     now = datetime.now(timezone.utc).isoformat()
+
+    # Save to viewed_profiles so it won’t repeat
+    supabase.table("viewed_profiles").insert({
+        "user_id": current_user_id,
+        "viewed_id": matched_profile["id"],
+        "created_at": now
+    }).execute()
 
     # Log in match_history (if unique)
     existing_match = (
@@ -1082,5 +1102,6 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
