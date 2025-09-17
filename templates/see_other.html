@@ -1,5 +1,4 @@
-{% extends "base.html" %} 
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="max-w-2xl mx-auto p-6">
   <div class="flex items-center justify-between mb-6">
     <a
@@ -7,12 +6,22 @@
       class="text-yellow-500 hover:text-yellow-600 transition-colors duration-200"
     >
       <!-- back button -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-           fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        />
       </svg>
     </a>
-    <h2 class="text-2xl font-bold text-yellow-800  flex-grow text-center">
+    <h2 class="text-2xl font-bold text-yellow-800 flex-grow text-center">
       Discover Profiles
     </h2>
   </div>
@@ -24,18 +33,44 @@
       name="q"
       value="{{ q or '' }}"
       placeholder="Search by name..."
-      class="w-full px-4 py-2 rounded-lg border border-orange-300 
-             bg-yellow-50  text-yellow-900 
-             focus:outline-none focus:ring-2 focus:ring-orange-500"
+      class="w-full px-4 py-2 rounded-lg border border-orange-300 bg-yellow-50 text-yellow-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
     />
   </form>
+
+  {% if upgrade_message %}
+  <div
+    class="mb-6 p-4 rounded-lg bg-yellow-100 border border-yellow-400 text-yellow-700 font-medium flex items-center space-x-2"
+  >
+    <!-- ⚠️ Warning Icon -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 text-yellow-600 flex-shrink-0"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 9v2m0 4h.01M4.93 19h14.14c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.2 16c-.77 1.33.19 3 1.73 3z"
+      />
+    </svg>
+
+    <span>{{ upgrade_message }}</span>
+  </div>
+  {% if message != "No matches found." %}
+  <div class="text-yellow-800 font-semibold text-left mb-4">
+    Here are your matches
+  </div>
+
+  {% endif %} {% endif %}
 
   <div class="space-y-4">
     {% for user in users %}
     <a
       href="{{ url_for('view_profile', user_id=user.id) }}"
       class="block bg-yellow-100 border-2 border-orange-500 rounded-2xl shadow hover:shadow-lg p-4 transition cursor-pointer"
-
     >
       <div class="flex items-center space-x-4">
         <img
@@ -45,17 +80,11 @@
         />
 
         <div>
-          <h3 class="text-lg font-semibold text-yellow-900 ">
-            {{ user.name }}
-          </h3>
+          <h3 class="text-lg font-semibold text-yellow-900">{{ user.name }}</h3>
 
-          <p class="text-sm text-yellow-500 ">
-            {{ user.age }} years
-          </p>
+          <p class="text-sm text-yellow-500">{{ user.age }} years</p>
 
-           <p class="text-sm text-yellow-500 ">
-            {{ user.location }}
-          </p>
+          <p class="text-sm text-yellow-500">{{ user.location }}</p>
 
           {% if user.extra_field %}
           <p class="text-sm text-yellow-400 italic">{{ user.extra_field }}</p>
@@ -63,11 +92,13 @@
         </div>
       </div>
     </a>
-    {% else %}
-    <p class="text-yellow-500  text-center">
-      No profiles found.
-    </p>
-    {% endfor %}
+    {% else %} {% if users %}
+    <!-- Show profile cards -->
+    {% for user in users %}
+    <div>{{ user.name }}</div>
+    {% endfor %} {% else %}
+    <p class="text-gray-500 text-center mt-6">{{ message }}</p>
+    {% endif %} {% endfor %}
   </div>
 </div>
 {% endblock %}
