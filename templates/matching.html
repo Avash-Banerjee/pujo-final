@@ -36,11 +36,16 @@
     position: relative;
     width: 100%;
     height: 350px;
+    background: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .profile-image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: none; /* initially hidden until loaded */
   }
   .profile-image-container::after {
     content: "";
@@ -50,6 +55,21 @@
     width: 100%;
     height: 50%;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  }
+
+  /* Skeleton loader */
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+  }
+  @keyframes skeleton-loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
   }
 </style>
 
@@ -92,12 +112,12 @@
     </button>
   </div>
 
-<div
+  <div
     id="profile-card"
     class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden transform scale-100 opacity-100 border-4 border-grey"
->
-
+  >
     <div class="profile-image-container rounded-t-2xl">
+      <div id="profile-pic-skeleton" class="skeleton absolute inset-0"></div>
       <img
         id="profile-pic"
         src=""
@@ -213,38 +233,83 @@
 
 <script>
   let currentProfile = null;
+  let nextProfileCache = null;
+
+  async function fetchProfile(endpoint = "/next-profile") {
+    const res = await fetch(endpoint);
+    if (res.ok) {
+      return await res.json();
+    }
+    return null;
+  }
+
+  async function prefetchNext() {
+    try {
+      const data = await fetchProfile();
+      if (data && !data.error) {
+        nextProfileCache = data;
+      } else {
+        nextProfileCache = null;
+      }
+    } catch (err) {
+      console.error("Prefetch error:", err);
+      nextProfileCache = null;
+    }
+  }
 
   async function fetchNextProfile() {
     const loader = document.getElementById("loader");
     loader.classList.remove("hidden"); // show loader
 
     try {
-      const res = await fetch("/next-profile");
-      if (res.ok) {
-        const data = await res.json();
-        const profileCard = document.getElementById("profile-card");
-        const noProfiles = document.getElementById("no-profiles");
+      let data;
 
-        if (data.error) {
-          profileCard.classList.add("hidden");
-          noProfiles.classList.remove("hidden");
-        } else {
-          currentProfile = data;
-          profileCard.classList.remove("hidden");
-          noProfiles.classList.add("hidden");
-          document.getElementById("profile-pic").src =
-            data.profile_picture ||
-            "{{ url_for('static', filename='default-pic.png') }}";
-          document.getElementById("profile-name").innerText = data.name;
-          document.getElementById("profile-age").innerText = data.age
-            ? `${data.age}`
-            : "";
-          document.getElementById("profile-bio").innerText = data.bio || "";
-          document.getElementById(
-            "view-full-profile"
-          ).href = `/profile/${data.id}`;
+      if (nextProfileCache) {
+        // use pre-fetched profile
+        data = nextProfileCache;
+        nextProfileCache = null;
+        prefetchNext(); // fetch another in background
+      } else {
+        data = await fetchProfile();
+        if (!data || data.error) {
+          document.getElementById("profile-card").classList.add("hidden");
+          document.getElementById("no-profiles").classList.remove("hidden");
+          return;
         }
+        prefetchNext(); // start prefetching next
       }
+
+      currentProfile = data;
+      const profileCard = document.getElementById("profile-card");
+      const noProfiles = document.getElementById("no-profiles");
+
+      profileCard.classList.remove("hidden");
+      noProfiles.classList.add("hidden");
+
+      // preload image before showing
+      const img = document.getElementById("profile-pic");
+      const skeleton = document.getElementById("profile-pic-skeleton");
+      img.style.display = "none";
+      skeleton.classList.remove("hidden");
+
+      const preloader = new Image();
+      preloader.src =
+        data.profile_picture ||
+        "{{ url_for('static', filename='default-pic.png') }}";
+      preloader.onload = () => {
+        img.src = preloader.src;
+        skeleton.classList.add("hidden");
+        img.style.display = "block";
+
+        document.getElementById("profile-name").innerText = data.name;
+        document.getElementById("profile-age").innerText = data.age
+          ? `${data.age}`
+          : "";
+        document.getElementById("profile-bio").innerText = data.bio || "";
+        document.getElementById(
+          "view-full-profile"
+        ).href = `/profile/${data.id}`;
+      };
     } catch (err) {
       console.error("Error fetching profile:", err);
     } finally {
@@ -278,6 +343,8 @@
     fetchNextProfile();
   }
 
+  // load first profile
   fetchNextProfile();
 </script>
 {% endblock %}
+
