@@ -950,10 +950,12 @@ def next_profile():
         opposite_genders = ["male", "female", "non-binary", "prefer-not-to-say"]  # fallback
 
     # Get already viewed profiles
-    viewed_res = supabase.table("viewed_profiles") \
-        .select("viewed_id") \
-        .eq("user_id", current_user_id) \
+    viewed_res = (
+        supabase.table("viewed_profiles")
+        .select("viewed_id")
+        .eq("user_id", current_user_id)
         .execute()
+    )
     viewed_ids = [row["viewed_id"] for row in viewed_res.data]
 
     # Fetch potential matches (excluding viewed)
@@ -962,8 +964,7 @@ def next_profile():
         .select("id, name, age, bio, photos")
         .in_("gender", opposite_genders)
         .neq("id", current_user_id)
-        .not_.in_("id", viewed_ids)
-  # ✅ exclude already viewed
+        .not_.in_("id", viewed_ids)   # ✅ exclude already viewed
         .execute()
     )
 
@@ -986,7 +987,7 @@ def next_profile():
         "created_at": now
     }).execute()
 
-    # Log in match_history (if unique)
+    # ✅ Log in match_history (if unique, like 1st version)
     existing_match = (
         supabase.table("match_history")
         .select("id")
@@ -1002,7 +1003,7 @@ def next_profile():
             "created_at": now
         }).execute()
 
-    # Always log in match_activity
+    # ✅ Always log in match_activity (like 1st version)
     supabase.table("match_activity").insert({
         "user_id": current_user_id,
         "matched_id": matched_profile['id'],
@@ -1102,6 +1103,7 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
