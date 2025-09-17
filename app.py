@@ -527,14 +527,14 @@ def delete_photo():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/see-other', methods=['GET', 'POST'])
+@app.route('/see-other', methods=['GET'])
 def see_other():
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
     current_user_id = session['user_id']
 
-    # Get current user's vip status
+    # Get current user's VIP status
     res_user = supabase.table("profiles").select("vip").eq("id", current_user_id).execute()
     if not res_user.data:
         flash("User profile not found.", "danger")
@@ -542,23 +542,55 @@ def see_other():
 
     is_vip = res_user.data[0].get("vip", False)
 
-    if not is_vip:
-        flash("Restricted for VIP users only.", "warning")
-        return redirect(url_for('dashboard'))
-
-
+    # --- Search support ---
     search_query = request.args.get("q", "").strip()
 
-    query = supabase.table("profiles").select("*").neq("id", current_user_id)
-    if search_query:
-        # ilike = case-insensitive LIKE in PostgREST
-        query = query.ilike("name", f"%{search_query}%")
+    profiles = []
+    message = None
+    upgrade_message = None
 
-    res_profiles = query.execute()
-    profiles = res_profiles.data if res_profiles.data else []
+    if is_vip:
+        # VIP can see all profiles except their own
+        query = supabase.table("profiles").select("*").neq("id", current_user_id)
+        if search_query:
+            query = query.ilike("name", f"%{search_query}%")
+        res_profiles = query.execute()
+        profiles = res_profiles.data if res_profiles.data else []
+
+        if not profiles:
+            message = "No profiles found."
+    else:
+        # Non-VIP → only show matched profiles
+        matches_res = supabase.table("match_history") \
+            .select("matched_id") \
+            .eq("user_id", current_user_id).execute()
+
+        matched_ids = [m['matched_id'] for m in matches_res.data] if matches_res.data else []
+
+        if matched_ids:
+            query = supabase.table("profiles").select("*").in_("id", matched_ids)
+            if search_query:
+                query = query.ilike("name", f"%{search_query}%")
+            res_profiles = query.execute()
+            profiles = res_profiles.data if res_profiles.data else []
+
+            if not profiles:
+                message = "No matches found."
+        else:
+            message = "No matches found."
+
+        upgrade_message = "Upgrade to VIP to access all profiles."
+
     session['back_url'] = url_for('see_other')
 
-    return render_template("see_other.html", users=profiles, q=search_query)
+    return render_template(
+        "see_other.html",
+        users=profiles,
+        q=search_query,
+        is_vip=is_vip,
+        message=message,
+        upgrade_message=upgrade_message
+    )
 
 
 
@@ -1050,4 +1082,5 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
